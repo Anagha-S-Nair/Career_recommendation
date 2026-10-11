@@ -1,0 +1,14 @@
+{
+  "version": "V17.0-XGBoost-SMOTE-92pct",
+  "algorithm": "XGBoost",
+  "trained_at": "2026-10-08T16:18:29Z",
+  "train_samples_smote": 58390,
+  "test_samples": 4936,
+  "metrics": {
+    "accuracy": 91.65,
+    "f1_score": 0.9415,
+    "roc_auc": 97.28,
+    "precision": 94.28,
+    "recall": 94.02
+  }
+}

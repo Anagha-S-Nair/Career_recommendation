@@ -1,0 +1,2 @@
+champion_model,overall_test_accuracy,f1_score,roc_auc,decisive_confidence_margin,test_set_size,train_samples_smote
+XGBoost,91.65,0.9415,97.28,0.27,4936,58390

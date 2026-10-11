@@ -1,0 +1,279 @@
+{% extends 'base.html' %}
+
+{% block title %}Student Details: {{ student.full_name }} - Admin Panel{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <!-- Breadcrumb and Navigation Header -->
+    <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-2">
+        <div>
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb mb-1">
+                    <li class="breadcrumb-item"><a href="{{ url_for('admin.admin_dashboard') }}">Admin</a></li>
+                    <li class="breadcrumb-item"><a href="{{ url_for('admin.manage_users') }}">Users</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">{{ student.student_code }}</li>
+                </ol>
+            </nav>
+            <h2 class="fw-bold mb-0" style="color: var(--text-main);">
+                {{ student.full_name }}
+            </h2>
+        </div>
+        <div class="d-flex gap-2">
+            <a href="{{ url_for('admin.manage_users') }}" class="btn btn-outline-custom">
+                <i class="bi bi-arrow-left me-1"></i> Back to User List
+            </a>
+            <button type="button" class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#deleteUserModal">
+                <i class="bi bi-trash-fill me-1"></i> Delete User
+            </button>
+        </div>
+    </div>
+
+    <!-- Student Profile Overview Cards -->
+    <div class="row g-4 mb-5">
+        <div class="col-lg-4">
+            <div class="card-custom p-4 h-100 shadow-sm">
+                <div class="d-flex align-items-center gap-3 mb-3 pb-3 border-bottom" style="border-color: var(--border-color) !important;">
+                    <div class="rounded-circle bg-primary-subtle text-primary d-flex align-items-center justify-content-center" style="width: 54px; height: 54px;">
+                        <i class="bi bi-person-fill fs-3"></i>
+                    </div>
+                    <div>
+                        <h5 class="fw-bold mb-0" style="color: var(--text-main);">{{ student.full_name }}</h5>
+                        <span class="small text-muted">@{{ user.username }}</span>
+                    </div>
+                </div>
+
+                <div class="d-flex flex-column gap-2 small">
+                    <div class="d-flex justify-content-between">
+                        <span class="text-muted">Student Code:</span>
+                        <strong class="text-dark"><code>{{ student.student_code }}</code></strong>
+                    </div>
+                    <div class="d-flex justify-content-between">
+                        <span class="text-muted">Email Address:</span>
+                        <span style="color: var(--text-main);">{{ user.email }}</span>
+                    </div>
+                    <div class="d-flex justify-content-between">
+                        <span class="text-muted">Grade / Class:</span>
+                        <span class="badge-custom badge-primary-custom">Class {{ student.class_level }}</span>
+                    </div>
+                    <div class="d-flex justify-content-between">
+                        <span class="text-muted">Stream Track:</span>
+                        <strong>{{ student.stream or 'General' }}</strong>
+                    </div>
+                    <div class="d-flex justify-content-between">
+                        <span class="text-muted">School Board:</span>
+                        <span>{{ student.board or 'CBSE' }}</span>
+                    </div>
+                    <div class="d-flex justify-content-between">
+                        <span class="text-muted">Medium of Study:</span>
+                        <span>{{ student.medium or 'English' }}</span>
+                    </div>
+                    <div class="d-flex justify-content-between">
+                        <span class="text-muted">Registered On:</span>
+                        <span>{{ student.created_at.strftime('%d %b %Y') if student.created_at else 'N/A' }}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-8">
+            <div class="card-custom p-4 h-100 shadow-sm">
+                <div class="d-flex align-items-center justify-content-between mb-3 pb-3 border-bottom" style="border-color: var(--border-color) !important;">
+                    <h5 class="fw-bold mb-0" style="color: var(--text-main);">Academic Subject Performance</h5>
+                    <span class="badge-custom badge-neutral-custom">School Marks</span>
+                </div>
+
+                {% if academic %}
+                <div class="row g-3">
+                    <div class="col-sm-6 col-md-3">
+                        <div class="p-3 rounded-2 text-center" style="background-color: var(--surface-subtle);">
+                            <div class="small text-muted mb-1">Mathematics</div>
+                            <div class="fs-4 fw-bold text-primary">{{ academic.mathematics_score|round|int if academic.mathematics_score else 'N/A' }}%</div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 col-md-3">
+                        <div class="p-3 rounded-2 text-center" style="background-color: var(--surface-subtle);">
+                            <div class="small text-muted mb-1">Science</div>
+                            <div class="fs-4 fw-bold text-success">{{ academic.science_score|round|int if academic.science_score else 'N/A' }}%</div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 col-md-3">
+                        <div class="p-3 rounded-2 text-center" style="background-color: var(--surface-subtle);">
+                            <div class="small text-muted mb-1">Computer Science</div>
+                            <div class="fs-4 fw-bold text-info">{{ academic.computer_science_score|round|int if academic.computer_science_score else 'N/A' }}%</div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 col-md-3">
+                        <div class="p-3 rounded-2 text-center" style="background-color: var(--surface-subtle);">
+                            <div class="small text-muted mb-1">English</div>
+                            <div class="fs-4 fw-bold text-warning">{{ academic.english_score|round|int if academic.english_score else 'N/A' }}%</div>
+                        </div>
+                    </div>
+                </div>
+                {% else %}
+                <p class="text-muted small mb-0">No academic marks entered yet by this student.</p>
+                {% endif %}
+
+                <div class="mt-4 pt-3 border-top" style="border-color: var(--border-color) !important;">
+                    <div class="row text-center g-2">
+                        <div class="col-4">
+                            <div class="small text-muted">Total Tests Taken</div>
+                            <div class="fs-5 fw-bold" style="color: var(--text-main);">{{ session_details|length }}</div>
+                        </div>
+                        <div class="col-4">
+                            <div class="small text-muted">Completed Tests</div>
+                            <div class="fs-5 fw-bold text-success">
+                                {{ session_details|selectattr('session.status', 'equalto', 'completed')|list|length }}
+                            </div>
+                        </div>
+                        <div class="col-4">
+                            <div class="small text-muted">In Progress Tests</div>
+                            <div class="fs-5 fw-bold text-warning">
+                                {{ session_details|selectattr('session.status', 'equalto', 'in_progress')|list|length }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Complete Assessment Sessions & Test Results -->
+    <div class="card-custom p-4 shadow-sm">
+        <h4 class="fw-bold mb-3" style="color: var(--text-main);">
+            <i class="bi bi-journal-check text-primary me-2"></i>Assessment Test History & Career Match Results
+        </h4>
+
+        {% if session_details and session_details|length > 0 %}
+            <div class="d-flex flex-column gap-4">
+                {% for item in session_details %}
+                <div class="border rounded-3 p-4" style="background-color: var(--surface-card); border-color: var(--border-color) !important;">
+                    <div class="d-flex flex-wrap align-items-center justify-content-between mb-3 pb-2 border-bottom gap-2" style="border-color: var(--border-color) !important;">
+                        <div>
+                            <span class="badge-custom badge-primary-custom me-2">Attempt #{{ item.attempt_number }}</span>
+                            <span class="fw-bold" style="color: var(--text-main);">Session #ASS-{{ item.session.id }}</span>
+                            <span class="small text-muted ms-2">&bull; Started: {{ item.session.started_at.strftime('%d %b %Y, %I:%M %p') if item.session.started_at else 'N/A' }}</span>
+                        </div>
+                        <div class="d-flex align-items-center gap-2">
+                            <span class="badge-custom {% if item.session.status == 'completed' %}badge-success-custom{% elif item.session.status == 'in_progress' %}badge-warning-custom{% else %}badge-neutral-custom{% endif %}">
+                                {{ item.session.status.replace('_', ' ').title() }}
+                            </span>
+                            <a href="{{ url_for('admin.view_session_detail', session_id=item.session.id) }}" class="btn btn-outline-custom btn-sm-custom">
+                                <i class="bi bi-list-check me-1"></i> View Answers ({{ item.answers_count }})
+                            </a>
+                            {% if item.session.status == 'completed' %}
+                                <a href="{{ url_for('assessment.results_page', assessment_id=item.session.id) }}" class="btn btn-primary-custom btn-sm-custom" target="_blank">
+                                    <i class="bi bi-file-earmark-pdf me-1"></i> Full Results Page
+                                </a>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <!-- Scores & Cognitive Breakdown if completed -->
+                    {% if item.scores %}
+                    <div class="mb-3">
+                        <div class="small fw-semibold text-muted text-uppercase mb-2">Cognitive & Interest Scores (0-100)</div>
+                        <div class="row g-2 small">
+                            <div class="col-md-2 col-4">
+                                <div class="p-2 rounded text-center" style="background-color: var(--surface-subtle);">
+                                    <div class="text-muted small">Math</div>
+                                    <strong style="color: var(--text-main);">{{ item.scores.mathematical_ability|round|int }}%</strong>
+                                </div>
+                            </div>
+                            <div class="col-md-2 col-4">
+                                <div class="p-2 rounded text-center" style="background-color: var(--surface-subtle);">
+                                    <div class="text-muted small">Logic</div>
+                                    <strong style="color: var(--text-main);">{{ item.scores.logical_reasoning|round|int }}%</strong>
+                                </div>
+                            </div>
+                            <div class="col-md-2 col-4">
+                                <div class="p-2 rounded text-center" style="background-color: var(--surface-subtle);">
+                                    <div class="text-muted small">Science</div>
+                                    <strong style="color: var(--text-main);">{{ item.scores.scientific_reasoning|round|int }}%</strong>
+                                </div>
+                            </div>
+                            <div class="col-md-2 col-4">
+                                <div class="p-2 rounded text-center" style="background-color: var(--surface-subtle);">
+                                    <div class="text-muted small">Problem Solving</div>
+                                    <strong style="color: var(--text-main);">{{ item.scores.problem_solving|round|int }}%</strong>
+                                </div>
+                            </div>
+                            <div class="col-md-2 col-4">
+                                <div class="p-2 rounded text-center" style="background-color: var(--surface-subtle);">
+                                    <div class="text-muted small">Analytical</div>
+                                    <strong style="color: var(--text-main);">{{ item.scores.analytical_ability|round|int }}%</strong>
+                                </div>
+                            </div>
+                            <div class="col-md-2 col-4">
+                                <div class="p-2 rounded text-center" style="background-color: var(--surface-subtle);">
+                                    <div class="text-muted small">Digital</div>
+                                    <strong style="color: var(--text-main);">{{ item.scores.digital_ability|round|int }}%</strong>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% endif %}
+
+                    <!-- Top Recommendations for this session -->
+                    {% if item.top_recs and item.top_recs|length > 0 %}
+                    <div>
+                        <div class="small fw-semibold text-muted text-uppercase mb-2">Top ML Recommended Careers</div>
+                        <div class="row g-2">
+                            {% for rec in item.top_recs %}
+                            <div class="col-md-4">
+                                <div class="p-3 rounded-2 h-100" style="background-color: var(--surface-subtle); border-left: 3px solid var(--primary);">
+                                    <div class="d-flex justify-content-between align-items-center mb-1">
+                                        <span class="badge-custom badge-neutral-custom small">#{{ rec.rank_position }}</span>
+                                        <span class="fw-bold text-primary">{{ rec.score }}% Match</span>
+                                    </div>
+                                    <div class="fw-semibold" style="color: var(--text-main);">{{ rec.career.career_name if rec.career else 'Career' }}</div>
+                                    <div class="small text-muted">{{ rec.career.domain.domain_name if rec.career and rec.career.domain else '' }}</div>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    {% endif %}
+                </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="text-center py-4">
+                <i class="bi bi-clipboard-x fs-2 text-muted mb-2"></i>
+                <p class="text-muted mb-0">This student has not attempted any assessments yet.</p>
+            </div>
+        {% endif %}
+    </div>
+</div>
+
+<!-- Modal: Delete User -->
+<div class="modal fade" id="deleteUserModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border-0 shadow">
+            <div class="modal-header">
+                <h5 class="modal-title fw-bold text-danger"><i class="bi bi-exclamation-triangle-fill me-2"></i>Confirm User Deletion</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p style="color: var(--text-main);">
+                    Are you sure you want to permanently delete the student account for:
+                </p>
+                <div class="p-3 rounded-2 bg-light mb-3">
+                    <strong>{{ student.full_name }}</strong> (<code>{{ student.student_code }}</code>)<br>
+                    <span class="small text-muted">Email: {{ user.email }} | Username: @{{ user.username }}</span>
+                </div>
+                <div class="alert alert-danger small mb-0">
+                    <i class="bi bi-info-circle-fill me-1"></i> This will delete the student profile, all {{ session_details|length }} assessment sessions, student answers, and recommendation records.
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-light" data-bs-dismiss="modal">Cancel</button>
+                <form method="POST" action="{{ url_for('admin.delete_user', user_id=user.id) }}">
+                    <button type="submit" class="btn btn-danger">
+                        <i class="bi bi-trash-fill me-1"></i> Permanently Delete
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

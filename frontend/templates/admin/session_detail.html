@@ -1,0 +1,151 @@
+{% extends 'base.html' %}
+
+{% block title %}Session #ASS-{{ session.id }} Details - Admin Panel{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <!-- Breadcrumb and Navigation Header -->
+    <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-2">
+        <div>
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb mb-1">
+                    <li class="breadcrumb-item"><a href="{{ url_for('admin.admin_dashboard') }}">Admin</a></li>
+                    <li class="breadcrumb-item"><a href="{{ url_for('admin.manage_users') }}">Users</a></li>
+                    <li class="breadcrumb-item"><a href="{{ url_for('admin.view_user_detail', user_id=student.user_id) }}">{{ student.student_code }}</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Session #ASS-{{ session.id }}</li>
+                </ol>
+            </nav>
+            <h2 class="fw-bold mb-0" style="color: var(--text-main);">
+                Assessment Test Answers & Scoring Breakdown
+            </h2>
+        </div>
+        <div class="d-flex gap-2">
+            <a href="{{ url_for('admin.view_user_detail', user_id=student.user_id) }}" class="btn btn-outline-custom">
+                <i class="bi bi-arrow-left me-1"></i> Back to Student Profile
+            </a>
+            {% if session.status == 'completed' %}
+                <a href="{{ url_for('assessment.results_page', assessment_id=session.id) }}" class="btn btn-primary-custom" target="_blank">
+                    <i class="bi bi-award-fill me-1"></i> Student Results Page
+                </a>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Session Summary Card -->
+    <div class="card-custom p-4 mb-4 shadow-sm">
+        <div class="row g-3 align-items-center">
+            <div class="col-md-3">
+                <div class="small text-muted">Student Name</div>
+                <strong class="fs-5" style="color: var(--text-main);">{{ student.full_name }}</strong>
+                <div class="small text-muted">Class {{ student.class_level }} &bull; {{ student.stream or 'General' }}</div>
+            </div>
+            <div class="col-md-3">
+                <div class="small text-muted">Session ID & Status</div>
+                <div class="d-flex align-items-center gap-2 mt-1">
+                    <code>#ASS-{{ session.id }}</code>
+                    <span class="badge-custom {% if session.status == 'completed' %}badge-success-custom{% elif session.status == 'in_progress' %}badge-warning-custom{% else %}badge-neutral-custom{% endif %}">
+                        {{ session.status.replace('_', ' ').title() }}
+                    </span>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="small text-muted">Started & Completed</div>
+                <div class="small fw-semibold" style="color: var(--text-main);">
+                    {{ session.started_at.strftime('%d %b %Y, %I:%M %p') if session.started_at else 'N/A' }}
+                </div>
+                <div class="small text-muted">
+                    {{ session.completed_at.strftime('%d %b %Y, %I:%M %p') if session.completed_at else 'In Progress' }}
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="small text-muted">Completion Rate</div>
+                <div class="fs-5 fw-bold text-primary">{{ (session.completion_percentage or 0)|round|int }}%</div>
+                <div class="progress mt-1" style="height: 6px;">
+                    <div class="progress-bar bg-primary" role="progressbar" data-progress="{{ (session.completion_percentage or 0)|round|int }}"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Questions and Student Submitted Answers Table -->
+    <div class="card-custom p-4 shadow-sm">
+        <div class="d-flex align-items-center justify-content-between mb-3 pb-2 border-bottom" style="border-color: var(--border-color) !important;">
+            <h5 class="fw-bold mb-0" style="color: var(--text-main);">
+                Presented Questions & Answers ({{ qa_list|length }} Total Questions)
+            </h5>
+            <span class="badge bg-light text-dark border small">Level-Tailored Question Set</span>
+        </div>
+
+        {% if qa_list and qa_list|length > 0 %}
+        <div class="table-responsive">
+            <table class="table-custom">
+                <thead>
+                    <tr>
+                        <th style="width: 5%;">#</th>
+                        <th style="width: 15%;">Section</th>
+                        <th style="width: 45%;">Question Prompt</th>
+                        <th style="width: 10%;">Difficulty</th>
+                        <th style="width: 25%;">Student Response & Score</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in qa_list %}
+                    <tr>
+                        <td><strong>{{ loop.index }}</strong></td>
+                        <td>
+                            <span class="badge bg-light text-dark border small">
+                                {{ item.question.section.name if item.question.section else 'Section' }}
+                            </span>
+                            <div class="small text-muted mt-1"><code>{{ item.question.question_code }}</code></div>
+                        </td>
+                        <td>
+                            <div style="color: var(--text-main);" class="fw-semibold">{{ item.question.question_text }}</div>
+                            <div class="small text-muted mt-1">
+                                Skill: <code>{{ item.question.skill_category or 'General' }}</code> &bull; Type: {{ item.question.question_type }}
+                            </div>
+                        </td>
+                        <td>
+                            <span class="badge-custom {% if item.question.difficulty == 'Easy' %}badge-success-custom{% elif item.question.difficulty == 'Medium' %}badge-warning-custom{% else %}badge-neutral-custom{% endif %}">
+                                {{ item.question.difficulty }}
+                            </span>
+                        </td>
+                        <td>
+                            {% if item.answer %}
+                                {% if item.selected_option %}
+                                    <div class="fw-bold mb-1" style="color: var(--text-main);">
+                                        {{ item.selected_option.option_text }}
+                                    </div>
+                                    {% if item.question.question_type in ['MCQ', 'SCENARIO'] %}
+                                        {% if item.is_correct %}
+                                            <span class="badge-custom badge-success-custom"><i class="bi bi-check-circle-fill me-1"></i> Correct (100%)</span>
+                                        {% else %}
+                                            <span class="badge-custom badge-danger-custom"><i class="bi bi-x-circle-fill me-1"></i> Incorrect (0%)</span>
+                                        {% endif %}
+                                    {% else %}
+                                        <span class="badge-custom badge-primary-custom">Selected Rating: {{ item.answer.selected_option }}/5</span>
+                                    {% endif %}
+                                {% elif item.answer.selected_option %}
+                                    <div class="fw-bold mb-1" style="color: var(--text-main);">
+                                        Option: {{ item.answer.selected_option }}
+                                    </div>
+                                    <span class="badge-custom badge-primary-custom">Recorded</span>
+                                {% elif item.answer.answer_text %}
+                                    <div class="small text-dark">{{ item.answer.answer_text }}</div>
+                                {% else %}
+                                    <span class="badge-custom badge-neutral-custom">Recorded</span>
+                                {% endif %}
+                            {% else %}
+                                <span class="badge-custom badge-neutral-custom text-muted"><i class="bi bi-dash-circle me-1"></i> Unanswered</span>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% else %}
+        <p class="text-muted mb-0">No questions recorded for this session.</p>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,169 @@
+{% extends 'base.html' %}
+
+{% block title %}Career Explorer - Discover {{ total_careers }} Career Pathways{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <!-- Header -->
+    <div class="text-center mb-5">
+        <span class="badge-custom badge-primary-custom mb-2">
+            <i class="bi bi-compass me-1"></i> Comprehensive Knowledge Base
+        </span>
+        <h1 class="display-6 fw-bold mb-2" style="color: var(--text-main);">Explore Verified Professional Career Pathways</h1>
+        <p class="lead" style="color: var(--text-secondary); max-width: 700px; margin: 0 auto; font-size: 1rem;">
+            Search and filter across {{ total_careers }} verified occupational profiles, covering industry domains, descriptions, required skills, and educational qualifications.
+        </p>
+    </div>
+
+    <!-- Search and Multi-Level Filter Bar (Solid Flat Card) -->
+    <div class="card-custom p-4 mb-4 shadow-sm">
+        <form method="GET" action="{{ url_for('career.explorer_page') }}">
+            <div class="row g-3">
+                <!-- Search Keyword -->
+                <div class="col-lg-4 col-md-12">
+                    <label class="form-label-custom">Keyword Search</label>
+                    <input type="text" class="form-control-custom" name="q" value="{{ search_q }}" placeholder="Search title, skills, subjects...">
+                </div>
+
+                <!-- Domain Filter -->
+                <div class="col-lg-3 col-md-4">
+                    <label class="form-label-custom">Career Domain</label>
+                    <select class="form-select-custom" name="domain_id" onchange="this.form.submit()">
+                        <option value="">All Domains ({{ domains | length }})</option>
+                        {% for dom in domains %}
+                            <option value="{{ dom.id }}" {% if selected_domain == dom.id %}selected{% endif %}>{{ dom.domain_name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <!-- Subdomain Filter -->
+                <div class="col-lg-3 col-md-4">
+                    <label class="form-label-custom">Subdomain</label>
+                    <select class="form-select-custom" name="subdomain_id" onchange="this.form.submit()" {% if not subdomains %}disabled{% endif %}>
+                        <option value="">{% if subdomains %}All Subdomains ({{ subdomains | length }}){% else %}Select Domain first{% endif %}</option>
+                        {% for sub in subdomains %}
+                            <option value="{{ sub.id }}" {% if selected_subdomain == sub.id %}selected{% endif %}>{{ sub.name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <!-- Action Button -->
+                <div class="col-lg-2 col-md-4 d-flex align-items-end">
+                    <div class="d-flex gap-2 w-100">
+                        <button type="submit" class="btn btn-primary-custom flex-grow-1">
+                            <i class="bi bi-funnel me-1"></i> Apply
+                        </button>
+                        {% if selected_domain or selected_subdomain or search_q %}
+                            <a href="{{ url_for('career.explorer_page') }}" class="btn btn-outline-custom" title="Reset Filters">
+                                <i class="bi bi-x-lg"></i>
+                            </a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <!-- Active Domain Quick Tabs -->
+    <div class="d-flex flex-nowrap overflow-auto gap-2 mb-4 pb-2" style="scrollbar-width: thin;">
+        <a href="{{ url_for('career.explorer_page') }}" class="btn btn-sm-custom {% if not selected_domain %}btn-primary-custom{% else %}btn-outline-custom{% endif %} text-nowrap">
+            All Careers ({{ total_careers }})
+        </a>
+        {% for dom in domains %}
+        <a href="{{ url_for('career.explorer_page', domain_id=dom.id) }}" class="btn btn-sm-custom {% if selected_domain == dom.id %}btn-primary-custom{% else %}btn-outline-custom{% endif %} text-nowrap">
+            <i class="bi {{ dom.icon if dom.icon else 'bi-briefcase' }} me-1"></i> {{ dom.domain_name }}
+        </a>
+        {% endfor %}
+    </div>
+
+    <!-- Results Status Bar -->
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <div class="small" style="color: var(--text-secondary);">
+            Showing <strong>{{ careers | length }}</strong> of <strong>{{ total_matched }}</strong> matched careers
+            {% if selected_domain %}in selected domain{% endif %}
+            (Page {{ current_page }} of {{ total_pages }})
+        </div>
+    </div>
+
+    <!-- Career Cards Grid -->
+    <div class="row g-4">
+        {% if careers %}
+            {% for career in careers %}
+            <div class="col-lg-4 col-md-6">
+                <div class="card-custom card-hover-lift h-100 p-4 d-flex flex-column">
+                    <div class="d-flex justify-content-between align-items-start mb-3">
+                        <span class="badge-custom badge-primary-custom">
+                            <i class="bi {{ career.domain_icon if career.domain_icon else 'bi-briefcase' }} me-1"></i>
+                            {{ career.domain_name }}
+                        </span>
+                        <span class="badge-custom badge-neutral-custom">{{ career.career_code }}</span>
+                    </div>
+
+                    <h5 class="fw-bold mb-2" style="color: var(--text-main);">{{ career.career_name }}</h5>
+                    <p class="small mb-3 flex-grow-1" style="color: var(--text-secondary); display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;">
+                        {{ career.description }}
+                    </p>
+
+                    <!-- Key Skills preview -->
+                    <div class="mb-3">
+                        <div class="small fw-semibold mb-1" style="color: var(--text-secondary);">Essential Skills:</div>
+                        <div class="d-flex flex-wrap gap-1">
+                            {% for skill in career.skills[:3] %}
+                                <span class="badge-custom badge-neutral-custom">{{ skill.skill_name }}</span>
+                            {% endfor %}
+                        </div>
+                    </div>
+
+                    <!-- Minimum Education Tag -->
+                    <div class="card-subtle p-2 small mb-3">
+                        <i class="bi bi-mortarboard me-1 text-primary"></i> <strong>Min. Education:</strong> {{ career.minimum_education }}
+                    </div>
+
+                    <!-- Actions -->
+                    <div class="d-flex gap-2 mt-auto">
+                        <a href="{{ url_for('career.career_detail_page', career_id=career.id) }}" class="btn btn-primary-custom btn-sm-custom w-100 text-center">
+                            View Details <i class="bi bi-arrow-right ms-1"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        {% else %}
+            <div class="col-12">
+                <div class="empty-state-card">
+                    <i class="bi bi-search fs-1 text-muted mb-3 d-block"></i>
+                    <h4 class="fw-bold mb-2">No careers found</h4>
+                    <p class="small mb-3" style="color: var(--text-secondary);">Try broadening your search query or resetting filters.</p>
+                    <a href="{{ url_for('career.explorer_page') }}" class="btn btn-outline-custom">Reset Filters</a>
+                </div>
+            </div>
+        {% endif %}
+    </div>
+
+    <!-- Pagination Controls -->
+    {% if total_pages > 1 %}
+    <nav class="mt-5" aria-label="Career Explorer Pagination">
+        <ul class="pagination justify-content-center gap-2">
+            <!-- Previous Page -->
+            <li class="page-item {% if not has_prev %}disabled{% endif %}">
+                <a class="btn btn-outline-custom btn-sm-custom" href="{{ url_for('career.explorer_page', page=prev_num, q=search_q, domain_id=selected_domain, subdomain_id=selected_subdomain, cluster_id=selected_cluster, education=edu_filter, environment=env_filter) if has_prev else '#' }}">
+                    <i class="bi bi-chevron-left me-1"></i> Previous
+                </a>
+            </li>
+
+            <!-- Page Indicator -->
+            <li class="page-item disabled d-flex align-items-center">
+                <span class="small px-3 fw-semibold" style="color: var(--text-secondary);">Page {{ current_page }} of {{ total_pages }}</span>
+            </li>
+
+            <!-- Next Page -->
+            <li class="page-item {% if not has_next %}disabled{% endif %}">
+                <a class="btn btn-outline-custom btn-sm-custom" href="{{ url_for('career.explorer_page', page=next_num, q=search_q, domain_id=selected_domain, subdomain_id=selected_subdomain, cluster_id=selected_cluster, education=edu_filter, environment=env_filter) if has_next else '#' }}">
+                    Next <i class="bi bi-chevron-right ms-1"></i>
+                </a>
+            </li>
+        </ul>
+    </nav>
+    {% endif %}
+</div>
+{% endblock %}

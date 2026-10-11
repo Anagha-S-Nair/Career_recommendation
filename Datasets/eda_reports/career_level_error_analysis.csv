@@ -1,0 +1,155 @@
+career_name,total_evals,accuracy,avg_prob
+Architect Specialist,75,0.92,0.5620393
+Chemical Engineer Specialist,74,0.8513513513513513,0.6924153
+Urban Planner Specialist,73,0.9041095890410958,0.72913766
+Database Administrator Specialist,73,0.9315068493150684,0.8033221
+Civil Engineer Specialist,73,0.9315068493150684,0.74545914
+Pharmacist Specialist,72,0.9305555555555556,0.7837066
+Energy Analyst Specialist,70,0.9285714285714286,0.75304353
+Animator Specialist,70,0.9571428571428572,0.6044108
+Ui Ux Designer Specialist,69,0.9420289855072463,0.61569214
+Defence Officer Specialist,69,0.855072463768116,0.7714802
+Accountant Specialist,68,0.9558823529411765,0.74703586
+Software Developer Specialist,67,0.9701492537313433,0.7551408
+Content Creator Specialist,67,0.8955223880597015,0.71174765
+Cybersecurity Analyst Specialist,66,0.8939393939393939,0.70921534
+Public Relations Specialist Specialist,65,0.9076923076923077,0.7668958
+Agricultural Scientist Specialist,65,0.9692307692307692,0.77207077
+Geneticist Specialist,65,0.9692307692307692,0.8349483
+Social Worker Specialist,65,0.9384615384615385,0.42592907
+Electrical Engineer Specialist,64,0.953125,0.62040687
+Data Analyst Specialist,64,0.890625,0.7117325
+Mechanical Engineer Specialist,64,0.890625,0.8715138
+Ai Engineer Specialist,63,0.9206349206349206,0.77867836
+Machine Learning Engineer Specialist,63,0.8888888888888888,0.70534575
+Welder Specialist,63,0.9047619047619048,0.72617126
+Dentist Specialist,62,0.9354838709677419,0.6719417
+Aviation Engineer Specialist,62,0.9838709677419355,0.7033565
+Hotel Manager Specialist,61,0.9344262295081968,0.7242647
+Nurse Specialist,61,0.9016393442622951,0.8186453
+Medical Laboratory Scientist Specialist,61,0.8852459016393442,0.7080169
+Business Analyst Specialist,61,0.9836065573770492,0.836255
+Economist Specialist,61,0.9508196721311475,0.7106538
+Psychologist Specialist,60,0.8666666666666667,0.6336251
+Pilot Specialist,60,0.8666666666666667,0.7601487
+Education Consultant Specialist,60,0.9,0.62291086
+Cloud Engineer Specialist,60,0.95,0.81914496
+Marketing Specialist Specialist,60,0.8666666666666667,0.7155243
+Automotive Engineer Specialist,59,0.9322033898305084,0.6963491
+Technician Specialist,59,0.864406779661017,0.6871467
+Human Resources Specialist Specialist,59,0.9661016949152542,0.8288277
+Data Scientist Specialist,59,0.9322033898305084,0.67705405
+Electronics Engineer Specialist,58,0.896551724137931,0.82188535
+Civil Services Officer Specialist,58,0.896551724137931,0.6535326
+Product Designer Specialist,57,0.9122807017543859,0.7344443
+Biotechnologist Specialist,57,0.8947368421052632,0.6191585
+Legal Advisor Specialist,57,0.9649122807017544,0.8209745
+Electrician Specialist,57,0.9298245614035088,0.7266252
+Lawyer Specialist,57,0.8947368421052632,0.74274653
+Auditor Specialist,56,0.9285714285714286,0.6729212
+Journalist Specialist,56,0.9285714285714286,0.8827572
+Investment Analyst Specialist,56,0.9107142857142857,0.6906127
+Entrepreneur Specialist,55,0.8909090909090909,0.6100905
+Illustrator Specialist,55,0.9454545454545454,0.78264153
+Graphic Designer Specialist,55,0.9454545454545454,0.64487875
+Environmental Scientist Specialist,55,0.9454545454545454,0.7850016
+Marine Engineer Specialist,55,0.8545454545454545,0.5441077
+Logistics Manager Specialist,55,0.8909090909090909,0.6163567
+Teacher Specialist,54,0.9444444444444444,0.7455852
+Travel Consultant Specialist,53,0.8490566037735849,0.6889266
+Sports Scientist Specialist,53,0.8679245283018868,0.6320819
+Supply Chain Analyst Specialist,53,0.9433962264150944,0.78493494
+Oceanographer Specialist,53,0.9433962264150944,0.632063
+Fashion Designer Specialist,52,0.8653846153846154,0.6440821
+Financial Analyst Specialist,52,0.9615384615384616,0.7893372
+Network Engineer Specialist,52,0.9615384615384616,0.5163689
+Physiotherapist Specialist,52,0.9423076923076923,0.6606344
+Environmental Engineer Specialist,52,0.8653846153846154,0.7464965
+Sports Coach Specialist,51,0.8627450980392157,0.6588234
+Mobile App Developer Specialist,50,0.96,0.77088547
+Web Developer Specialist,49,0.8775510204081632,0.7047536
+Research Scientist Specialist,49,0.8775510204081632,0.60143745
+Policy Analyst Specialist,49,0.8163265306122449,0.52844316
+Forestry Specialist Specialist,49,0.9183673469387755,0.75221395
+Chef Specialist,49,0.9183673469387755,0.8099605
+Doctor Specialist,48,0.9791666666666666,0.7718405
+Agronomist Specialist,47,0.9148936170212766,0.6383635
+Biomedical Engineer Specialist,46,0.9347826086956522,0.6172734
+Renewable Energy Engineer Specialist,44,0.8636363636363636,0.66059107
+Counsellor Specialist,43,0.8837209302325582,0.74610406
+Microbiologist Specialist,43,0.9302325581395349,0.612267
+Data Scientist,12,0.9166666666666666,0.45887396
+Biotechnologist,9,0.8888888888888888,0.812256
+Hotel Manager,9,1.0,0.99632823
+Machine Learning Engineer,8,1.0,0.99633455
+Ai Engineer,8,0.875,0.29502028
+Human Resources Specialist,7,0.7142857142857143,0.59998024
+Dentist,7,0.8571428571428571,0.11815787
+Civil Services Officer,7,1.0,0.853924
+Microbiologist,7,0.8571428571428571,0.9122554
+Auditor,6,1.0,0.16928081
+Agronomist,6,1.0,0.98180586
+Counsellor,6,0.8333333333333334,0.3678992
+Cloud Engineer,6,1.0,0.87608147
+Database Administrator,6,1.0,0.8848241
+Geneticist,6,0.8333333333333334,0.5265253
+Physiotherapist,6,0.8333333333333334,0.31170467
+Social Worker,6,0.8333333333333334,0.38044882
+Software Developer,6,1.0,0.7526137
+Marine Engineer,6,1.0,0.49069118
+Mobile App Developer,6,0.8333333333333334,0.06946634
+Animator,5,1.0,0.9528903
+Teacher,5,1.0,0.9982643
+Network Engineer,5,1.0,0.8209537
+Lawyer,5,1.0,0.79153335
+Content Creator,5,1.0,0.9999471
+Defence Officer,5,0.8,0.51793694
+Forestry Specialist,5,1.0,0.6310447
+Technician,5,1.0,0.98649377
+Urban Planner,5,1.0,0.9967576
+Welder,5,0.8,0.9278966
+Product Designer,4,1.0,0.98994035
+Mechanical Engineer,4,0.5,0.1453051
+Pilot,4,0.75,0.2393596
+Illustrator,4,1.0,0.9995168
+Chef,4,0.5,0.61557084
+Web Developer,4,1.0,0.99776965
+Travel Consultant,4,1.0,0.41203505
+Sports Scientist,4,1.0,0.18871485
+Data Analyst,4,1.0,0.6242453
+Education Consultant,4,1.0,0.5791885
+Doctor,4,1.0,0.24439277
+Entrepreneur,4,1.0,0.3014845
+Agricultural Scientist,3,1.0,0.9985109
+Electrician,3,1.0,0.9823408
+Environmental Scientist,3,0.3333333333333333,0.5613465
+Electronics Engineer,3,0.6666666666666666,0.686369
+Cybersecurity Analyst,3,1.0,0.6497576
+Policy Analyst,3,1.0,0.58515924
+Chemical Engineer,3,1.0,0.6229934
+Medical Laboratory Scientist,3,0.6666666666666666,0.33956245
+Logistics Manager,3,1.0,0.9987733
+Research Scientist,3,1.0,0.62289166
+Pharmacist,2,1.0,0.9964597
+Nurse,2,1.0,0.9785945
+Legal Advisor,2,1.0,0.99586254
+Architect,2,1.0,0.9988693
+Oceanographer,2,1.0,0.9975683
+Economist,2,1.0,0.015920086
+Civil Engineer,2,1.0,0.44290796
+Ui Ux Designer,2,1.0,0.90434265
+Environmental Engineer,2,1.0,0.94604135
+Fashion Designer,2,1.0,0.84028375
+Energy Analyst,2,0.5,0.3011104
+Business Analyst,1,1.0,0.9998946
+Biomedical Engineer,1,1.0,0.9618828
+Automotive Engineer,1,1.0,0.9617041
+Accountant,1,1.0,0.0003574237
+Journalist,1,1.0,0.90739655
+Investment Analyst,1,1.0,0.9999552
+Graphic Designer,1,1.0,0.99912804
+Financial Analyst,1,1.0,0.9998778
+Electrical Engineer,1,1.0,0.9844178
+Public Relations Specialist,1,1.0,0.79865634
+Psychologist,1,1.0,0.9853199
+Supply Chain Analyst,1,1.0,0.9999114

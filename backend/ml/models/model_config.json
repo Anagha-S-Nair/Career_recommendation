@@ -1,0 +1,10 @@
+{
+  "model": "XGBoost",
+  "algorithm": "XGBoost",
+  "version": "V17.0-XGBoost-SMOTE-92pct",
+  "threshold": 0.5,
+  "confidence_margin": 0.27,
+  "target": "compatibility_label",
+  "feature_count": 17,
+  "smote_balanced": true
+}

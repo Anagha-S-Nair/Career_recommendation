@@ -1,0 +1,110 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ career.career_name }} - Career Overview{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <!-- Breadcrumb -->
+    <nav aria-label="breadcrumb" class="mb-4">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{{ url_for('main.index') }}">Home</a></li>
+            <li class="breadcrumb-item"><a href="{{ url_for('career.explorer_page') }}">Careers</a></li>
+            <li class="breadcrumb-item active" aria-current="page" style="color: var(--text-secondary);">{{ career.career_name }}</li>
+        </ol>
+    </nav>
+
+    <!-- Header Card (Flat Solid Surface) -->
+    <div class="card-custom p-4 p-md-5 mb-4 shadow-sm">
+        <div class="row align-items-center g-4">
+            <div class="col-lg-8">
+                <div class="d-flex align-items-center gap-2 mb-2">
+                    <span class="badge-custom badge-primary-custom">
+                        <i class="bi {{ career.domain_icon if career.domain_icon else 'bi-briefcase' }} me-1"></i> {{ career.domain_name }}
+                    </span>
+                    {% if career.cluster_name %}
+                        <span class="badge-custom badge-neutral-custom">{{ career.cluster_name }}</span>
+                    {% endif %}
+                </div>
+                <h1 class="display-6 fw-bold mb-3" style="color: var(--text-main);">{{ career.career_name }}</h1>
+                <p class="mb-0" style="color: var(--text-secondary); line-height: 1.6;">
+                    {{ career.description }}
+                </p>
+            </div>
+            <div class="col-lg-4 text-lg-end">
+                <a href="{{ url_for('assessment.instructions_page') }}" class="btn btn-primary-custom btn-lg-custom">
+                    <i class="bi bi-compass me-2"></i> Take Assessment
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Grid -->
+    <div class="row g-4 mb-4">
+        <!-- Left: Skills & Subjects -->
+        <div class="col-lg-7">
+            <!-- Core Skills Card -->
+            <div class="card-custom p-4 mb-4">
+                <h4 class="fw-bold mb-3" style="color: var(--text-main);"><i class="bi bi-gear-wide text-primary me-2"></i> Important Skills to Develop</h4>
+                <div class="row g-2">
+                    {% for skill in career.skills %}
+                    <div class="col-md-6">
+                        <div class="card-subtle p-3 d-flex justify-content-between align-items-center h-100">
+                            <span class="fw-semibold small" style="color: var(--text-main);">{{ skill.skill_name }}</span>
+                            <span class="badge-custom {% if skill.importance_level == 'Critical' %}badge-warning-custom{% elif skill.importance_level == 'High' %}badge-primary-custom{% else %}badge-neutral-custom{% endif %}">
+                                {{ skill.importance_level }}
+                            </span>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <!-- School Subjects Card -->
+            <div class="card-custom p-4 mb-4">
+                <h4 class="fw-bold mb-2" style="color: var(--text-main);"><i class="bi bi-book text-primary me-2"></i> Relevant School Subjects</h4>
+                <p class="small mb-3" style="color: var(--text-secondary);">Subjects in Classes 7–12 that form a vital foundation for this career:</p>
+                <div class="d-flex flex-wrap gap-2">
+                    {% for subj in career.subjects %}
+                        <span class="badge-custom badge-primary-custom" style="font-size: 0.9rem;">
+                            <i class="bi bi-check-circle-fill text-primary me-1"></i> {{ subj.subject_name }}
+                        </span>
+                    {% endfor %}
+                </div>
+            </div>
+
+
+        </div>
+
+        <!-- Right: Education Profile Sidebar -->
+        <div class="col-lg-5">
+            <!-- Education Profile -->
+            <div class="card-custom p-4 mb-4">
+                <h5 class="fw-bold mb-3" style="color: var(--text-main);"><i class="bi bi-mortarboard text-primary me-2"></i> Education Overview</h5>
+                <div class="mb-3">
+                    <span class="small d-block" style="color: var(--text-secondary);">Minimum Degree Required:</span>
+                    <strong class="fs-6" style="color: var(--text-main);">{{ career.minimum_education or 'Bachelor\'s Degree' }}</strong>
+                </div>
+                <div>
+                    <span class="small d-block" style="color: var(--text-secondary);">Typical Qualification Pathway:</span>
+                    <strong class="fs-6" style="color: var(--text-main);">{{ career.typical_education or 'Higher Secondary + Specialized Degree' }}</strong>
+                </div>
+            </div>
+
+            <!-- Related Careers -->
+            {% if related_careers %}
+            <div class="card-custom p-4">
+                <h5 class="fw-bold mb-3" style="color: var(--text-main);">Related Career Pathways</h5>
+                <div class="d-flex flex-column gap-2">
+                    {% for rc in related_careers %}
+                    <a href="{{ url_for('career.career_detail_page', career_id=rc.id) }}" class="card-subtle p-2 text-decoration-none d-flex justify-content-between align-items-center">
+                        <span class="small fw-semibold" style="color: var(--text-main);">{{ rc.career_name }}</span>
+                        <i class="bi bi-chevron-right small" style="color: var(--text-secondary);"></i>
+                    </a>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

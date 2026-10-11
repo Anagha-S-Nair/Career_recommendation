@@ -1,0 +1,108 @@
+{% extends 'base.html' %}
+
+{% block title %}Register - Student Account{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-6 col-md-8">
+            <div class="card-custom p-4 p-md-5 shadow-sm">
+                <div class="text-center mb-4">
+                    <span class="badge-custom badge-primary-custom mb-2">Free Student Account</span>
+                    <h2 class="fw-bold mb-1" style="color: var(--text-main);">Create Your Account</h2>
+                    <p class="small mb-0" style="color: var(--text-secondary);">Start your personalized career guidance journey in minutes</p>
+                </div>
+
+                <form method="POST" action="{{ url_for('auth.register_page') }}">
+                    <!-- Name Row -->
+                    <div class="row g-3 mb-3">
+                        <div class="col-sm-6">
+                            <label for="first_name" class="form-label-custom">First Name <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control-custom" id="first_name" name="first_name" value="{{ form_data.first_name if form_data else '' }}" required placeholder="e.g. Rahul">
+                        </div>
+                        <div class="col-sm-6">
+                            <label for="last_name" class="form-label-custom">Last Name <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control-custom" id="last_name" name="last_name" value="{{ form_data.last_name if form_data else '' }}" required placeholder="e.g. Sharma">
+                        </div>
+                    </div>
+
+                    <!-- Email -->
+                    <div class="mb-3">
+                        <label for="email" class="form-label-custom">Email Address <span class="text-danger">*</span></label>
+                        <input type="email" class="form-control-custom" id="email" name="email" value="{{ form_data.email if form_data else '' }}" required placeholder="e.g. rahul@school.edu">
+                    </div>
+
+                    <!-- Class / Grade -->
+                    <div class="mb-3">
+                        <label for="class_level" class="form-label-custom">Current Class / Grade <span class="text-danger">*</span></label>
+                        <select class="form-select-custom" id="class_level" name="class_level" required onchange="handleClassChange(this.value)">
+                            <option value="" disabled {% if not form_data or not form_data.class_level %}selected{% endif %}>Select Your Class</option>
+                            <option value="7" {% if form_data and form_data.class_level == '7' %}selected{% endif %}>Class 7</option>
+                            <option value="8" {% if form_data and form_data.class_level == '8' %}selected{% endif %}>Class 8</option>
+                            <option value="9" {% if form_data and form_data.class_level == '9' %}selected{% endif %}>Class 9</option>
+                            <option value="10" {% if form_data and form_data.class_level == '10' %}selected{% endif %}>Class 10</option>
+                            <option value="11" {% if form_data and form_data.class_level == '11' %}selected{% endif %}>Class 11</option>
+                            <option value="12" {% if form_data and form_data.class_level == '12' %}selected{% endif %}>Class 12</option>
+                        </select>
+                    </div>
+
+                    <!-- Dynamic Stream (Only for Class 11-12) -->
+                    <div class="mb-3" id="stream_container" style="display: none;">
+                        <label for="stream" class="form-label-custom text-primary"><i class="bi bi-diagram-3 me-1"></i> Stream (Class 11–12)</label>
+                        <select class="form-select-custom" id="stream" name="stream">
+                            <option value="Science-PCM" selected>Science (Physics, Chemistry, Math)</option>
+                            <option value="Science-PCB">Science (Physics, Chemistry, Biology)</option>
+                            <option value="Commerce">Commerce</option>
+                            <option value="Humanities">Humanities / Arts</option>
+                        </select>
+                    </div>
+
+                    <!-- Password Row -->
+                    <div class="row g-3 mb-4">
+                        <div class="col-sm-6">
+                            <label for="password" class="form-label-custom">Password <span class="text-danger">*</span></label>
+                            <input type="password" class="form-control-custom" id="password" name="password" required placeholder="At least 8 chars (letters & numbers)">
+                        </div>
+                        <div class="col-sm-6">
+                            <label for="confirm_password" class="form-label-custom">Confirm Password <span class="text-danger">*</span></label>
+                            <input type="password" class="form-control-custom" id="confirm_password" name="confirm_password" required placeholder="Repeat password">
+                        </div>
+                    </div>
+
+                    <!-- Hidden sensible defaults for backend integrity -->
+                    <input type="hidden" name="board" value="CBSE">
+                    <input type="hidden" name="medium" value="English">
+                    <input type="hidden" name="gender" value="Prefer not to say">
+
+                    <button type="submit" class="btn btn-primary-custom w-100 py-2 mb-3">
+                        <i class="bi bi-arrow-right-circle me-1"></i> Create Account
+                    </button>
+                </form>
+
+                <div class="text-center small" style="color: var(--text-secondary);">
+                    Already have an account? <a href="{{ url_for('auth.login_page') }}" class="fw-semibold text-primary">Sign in here</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+function handleClassChange(val) {
+    const streamContainer = document.getElementById('stream_container');
+    if (val === '11' || val === '12') {
+        streamContainer.style.display = 'block';
+    } else {
+        streamContainer.style.display = 'none';
+    }
+}
+document.addEventListener('DOMContentLoaded', () => {
+    const classSelect = document.getElementById('class_level');
+    if (classSelect && (classSelect.value === '11' || classSelect.value === '12')) {
+        handleClassChange(classSelect.value);
+    }
+});
+</script>
+{% endblock %}

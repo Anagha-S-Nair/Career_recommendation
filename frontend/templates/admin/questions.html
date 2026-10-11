@@ -1,0 +1,305 @@
+{% extends 'base.html' %}
+
+{% block title %}Manage Questions - Admin Control Panel{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <!-- Header Row -->
+    <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-2">
+        <div>
+            <div class="d-inline-flex align-items-center gap-2 px-3 py-1 mb-2 rounded-pill" style="background-color: var(--surface-subtle); border: 1px solid var(--border-color);">
+                <i class="bi bi-patch-question-fill text-primary"></i>
+                <span class="small fw-semibold" style="color: var(--text-main);">Question Bank Repository</span>
+            </div>
+            <h2 class="fw-bold mb-1" style="color: var(--text-main);">Question Bank Management</h2>
+            <p class="small mb-0" style="color: var(--text-secondary);">
+                Create, filter, edit, toggle active status, and delete level-stratified questions across Classes 7 to 12.
+            </p>
+        </div>
+        <div class="d-flex gap-2">
+            <a href="{{ url_for('admin.admin_dashboard') }}" class="btn btn-outline-custom">
+                <i class="bi bi-arrow-left me-1"></i> Dashboard
+            </a>
+            <button class="btn btn-primary-custom" data-bs-toggle="modal" data-bs-target="#createQuestionModal">
+                <i class="bi bi-plus-circle-fill me-1"></i> Add New Question
+            </button>
+        </div>
+    </div>
+
+    <!-- Filter & Search Bar -->
+    <div class="card-custom p-3 mb-4 shadow-sm">
+        <form method="GET" action="{{ url_for('admin.manage_questions') }}" class="row g-2 align-items-center">
+            <div class="col-md-3">
+                <div class="input-group">
+                    <span class="input-group-text bg-transparent border-end-0" style="border-color: var(--border-color);">
+                        <i class="bi bi-search text-muted"></i>
+                    </span>
+                    <input type="text" 
+                           class="form-control border-start-0" 
+                           name="search" 
+                           value="{{ search }}" 
+                           placeholder="Search question text or keyword..."
+                           style="border-color: var(--border-color);">
+                </div>
+            </div>
+            <div class="col-md-2">
+                <select class="form-select" name="class_level" onchange="this.form.submit()" style="border-color: var(--border-color);">
+                    <option value="">All Classes (7–12)</option>
+                    <option value="7" {% if class_filter == 7 %}selected{% endif %}>Class 7</option>
+                    <option value="8" {% if class_filter == 8 %}selected{% endif %}>Class 8</option>
+                    <option value="9" {% if class_filter == 9 %}selected{% endif %}>Class 9</option>
+                    <option value="10" {% if class_filter == 10 %}selected{% endif %}>Class 10</option>
+                    <option value="11" {% if class_filter == 11 %}selected{% endif %}>Class 11</option>
+                    <option value="12" {% if class_filter == 12 %}selected{% endif %}>Class 12</option>
+                </select>
+            </div>
+            <div class="col-md-3">
+                <select class="form-select" name="section_id" onchange="this.form.submit()" style="border-color: var(--border-color);">
+                    <option value="">All 19 Sections</option>
+                    {% for sec in sections %}
+                        <option value="{{ sec.id }}" {% if sec_filter == sec.id %}selected{% endif %}>{{ sec.name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="col-md-2">
+                <select class="form-select" name="difficulty" onchange="this.form.submit()" style="border-color: var(--border-color);">
+                    <option value="">All Difficulties</option>
+                    <option value="Easy" {% if diff_filter == 'Easy' %}selected{% endif %}>Easy</option>
+                    <option value="Medium" {% if diff_filter == 'Medium' %}selected{% endif %}>Medium</option>
+                    <option value="Hard" {% if diff_filter == 'Hard' %}selected{% endif %}>Hard</option>
+                </select>
+            </div>
+            <div class="col-md-2 d-flex gap-2">
+                <button type="submit" class="btn btn-primary-custom flex-grow-1">
+                    <i class="bi bi-funnel me-1"></i> Filter
+                </button>
+                <a href="{{ url_for('admin.manage_questions') }}" class="btn btn-outline-custom">
+                    Reset
+                </a>
+            </div>
+        </form>
+    </div>
+
+    <!-- Questions Table -->
+    <div class="card-custom p-4 shadow-sm">
+        <div class="d-flex align-items-center justify-content-between mb-3">
+            <h5 class="fw-bold mb-0" style="color: var(--text-main);">
+                Total Questions in Filter: <span class="text-primary">{{ questions|length }}</span>
+            </h5>
+        </div>
+
+        {% if questions and questions|length > 0 %}
+        <div class="table-responsive">
+            <table class="table-custom">
+                <thead>
+                    <tr>
+                        <th style="width: 12%;">Code</th>
+                        <th style="width: 38%;">Question Prompt</th>
+                        <th style="width: 15%;">Section</th>
+                        <th style="width: 10%;">Class & Stream</th>
+                        <th style="width: 8%;">Difficulty</th>
+                        <th style="width: 7%;">Status</th>
+                        <th style="width: 10%;">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for q in questions %}
+                    <tr>
+                        <td>
+                            <code>{{ q.question_code }}</code>
+                            <div class="small text-muted">{{ q.question_type }}</div>
+                        </td>
+                        <td>
+                            <div class="fw-semibold text-truncate" style="max-width: 380px; color: var(--text-main);" title="{{ q.question_text }}">
+                                {{ q.question_text }}
+                            </div>
+                            <div class="small text-muted">Skill: <code>{{ q.skill_category or 'general' }}</code></div>
+                        </td>
+                        <td>
+                            <span class="badge-custom badge-neutral-custom small">{{ q.section.name if q.section else 'General' }}</span>
+                        </td>
+                        <td>
+                            <div>Class {{ q.class_min }}–{{ q.class_max }}</div>
+                            <span class="small text-muted">{{ q.stream_specific or 'All' }}</span>
+                        </td>
+                        <td>
+                            <span class="badge-custom {% if q.difficulty == 'Easy' %}badge-success-custom{% elif q.difficulty == 'Medium' %}badge-warning-custom{% else %}badge-neutral-custom{% endif %}">
+                                {{ q.difficulty }}
+                            </span>
+                        </td>
+                        <td>
+                            {% if q.is_active %}
+                                <span class="badge bg-success-subtle text-success border border-success-subtle">Active</span>
+                            {% else %}
+                                <span class="badge bg-danger-subtle text-danger border border-danger-subtle">Inactive</span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            <div class="d-flex align-items-center gap-1">
+                                <form method="POST" action="{{ url_for('admin.toggle_question_status', id=q.id) }}" style="display:inline;">
+                                    <button type="submit" 
+                                            class="btn btn-sm {% if q.is_active %}btn-outline-warning{% else %}btn-outline-success{% endif %}" 
+                                            title="{{ 'Deactivate' if q.is_active else 'Activate' }} Question">
+                                        <i class="bi bi-power"></i>
+                                    </button>
+                                </form>
+                                <button type="button" 
+                                        class="btn btn-outline-danger btn-sm" 
+                                        data-bs-toggle="modal" 
+                                        data-bs-target="#deleteQuestionModal{{ q.id }}" 
+                                        title="Delete Question">
+                                    <i class="bi bi-trash"></i>
+                                </button>
+                            </div>
+
+                            <!-- Delete Question Modal -->
+                            <div class="modal fade" id="deleteQuestionModal{{ q.id }}" tabindex="-1" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered">
+                                    <div class="modal-content border-0 shadow">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title fw-bold text-danger"><i class="bi bi-exclamation-triangle-fill me-2"></i>Confirm Question Deletion</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <p style="color: var(--text-main);">
+                                                Are you sure you want to permanently remove this question from the master question bank?
+                                            </p>
+                                            <div class="p-3 rounded-2 bg-light mb-3">
+                                                <strong><code>{{ q.question_code }}</code></strong><br>
+                                                <span class="small text-dark">{{ q.question_text }}</span>
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-light" data-bs-dismiss="modal">Cancel</button>
+                                            <form method="POST" action="{{ url_for('admin.delete_question', id=q.id) }}">
+                                                <button type="submit" class="btn btn-danger">
+                                                    <i class="bi bi-trash-fill me-1"></i> Delete Question
+                                                </button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% else %}
+        <div class="text-center py-5">
+            <i class="bi bi-patch-question fs-1 text-muted mb-2"></i>
+            <h6 class="fw-bold" style="color: var(--text-main);">No Questions Match Filter Criteria</h6>
+            <p class="small text-muted mb-0">Try clearing filters or search term.</p>
+        </div>
+        {% endif %}
+    </div>
+</div>
+
+<!-- Modal: Create Question -->
+<div class="modal fade" id="createQuestionModal" tabindex="-1" aria-labelledby="createQuestionModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content border-0 shadow-lg">
+            <form method="POST" action="{{ url_for('admin.manage_questions') }}">
+                <div class="modal-header">
+                    <h5 class="modal-title fw-bold" id="createQuestionModalLabel">
+                        <i class="bi bi-plus-circle-fill text-primary me-2"></i>Add Question to Master Bank
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body p-4">
+                    <div class="row g-3 mb-3">
+                        <div class="col-md-6">
+                            <label class="form-label fw-semibold small">Section Category</label>
+                            <select class="form-select" name="section_id" required>
+                                {% for sec in sections %}
+                                    <option value="{{ sec.id }}">{{ sec.name }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label fw-semibold small">Question Type</label>
+                            <select class="form-select" name="question_type" required>
+                                <option value="MCQ">Multiple Choice (MCQ)</option>
+                                <option value="SCENARIO">Scenario Based</option>
+                                <option value="RATING">5-Point Likert Rating Scale</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold small">Question Text / Prompt</label>
+                        <textarea class="form-control" name="question_text" rows="3" required placeholder="Enter the complete question prompt..."></textarea>
+                    </div>
+
+                    <div class="row g-3 mb-3">
+                        <div class="col-md-3">
+                            <label class="form-label fw-semibold small">Min Class</label>
+                            <input type="number" class="form-control" name="class_min" value="7" min="7" max="12" required>
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label fw-semibold small">Max Class</label>
+                            <input type="number" class="form-control" name="class_max" value="12" min="7" max="12" required>
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label fw-semibold small">Difficulty Level</label>
+                            <select class="form-select" name="difficulty">
+                                <option value="Easy">Easy</option>
+                                <option value="Medium" selected>Medium</option>
+                                <option value="Hard">Hard</option>
+                            </select>
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label fw-semibold small">Stream Track</label>
+                            <select class="form-select" name="stream_specific">
+                                <option value="All" selected>All Streams</option>
+                                <option value="Science-PCM">Science-PCM</option>
+                                <option value="Science-PCB">Science-PCB</option>
+                                <option value="Commerce">Commerce</option>
+                                <option value="Humanities">Humanities</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold small">Skill / Aptitude Category</label>
+                        <input type="text" class="form-control" name="skill_category" placeholder="e.g. mathematical_ability, logical_reasoning, technology_interest">
+                    </div>
+
+                    <div class="p-3 rounded-2 bg-light border mb-2">
+                        <h6 class="fw-bold mb-2"><i class="bi bi-list-check me-1"></i>Options (For MCQ / Scenario Questions)</h6>
+                        <div class="row g-2 mb-2">
+                            <div class="col-md-6">
+                                <label class="form-label small text-muted">Option 1</label>
+                                <input type="text" class="form-control" name="option_1" placeholder="First option answer text">
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label small text-muted">Option 2</label>
+                                <input type="text" class="form-control" name="option_2" placeholder="Second option answer text">
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label small text-muted">Option 3</label>
+                                <input type="text" class="form-control" name="option_3" placeholder="Third option answer text">
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label small text-muted">Option 4</label>
+                                <input type="text" class="form-control" name="option_4" placeholder="Fourth option answer text">
+                            </div>
+                        </div>
+                        <div>
+                            <label class="form-label small fw-semibold">Which option is correct? (1–4):</label>
+                            <input type="number" class="form-control" name="correct_option" value="1" min="1" max="4" style="max-width: 140px;">
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-light" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-primary-custom px-4">
+                        <i class="bi bi-check-circle-fill me-1"></i> Save to Question Bank
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

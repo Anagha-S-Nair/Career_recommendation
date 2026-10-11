@@ -1,0 +1,223 @@
+feature,importance
+composite_alignment_index,0.15433639582352812
+geometric_core_synergy,0.14080830317596837
+ability_interest_synergy,0.035814554449801105
+age,0.019648233769007543
+harmonic_core_match,0.018477883620998874
+class,0.01339931123456433
+holistic_synergy,0.008364773638691187
+career_name_Civil Engineer Specialist,0.007510028663333031
+career_name_Software Developer Specialist,0.006881053957699168
+career_name_Electrician Specialist,0.00649311808855621
+career_name_Cloud Engineer Specialist,0.006261380369897392
+career_domain_Life Sciences,0.006169195740297464
+career_domain_Business,0.006118065203589807
+career_name_Energy Analyst Specialist,0.006080307526694999
+career_name_General,0.0058873137554610955
+career_name_Electrical Engineer Specialist,0.005843753008053449
+career_domain_Engineering,0.005829833461931654
+career_name_Oceanographer Specialist,0.005797837877359578
+career_name_Nurse Specialist,0.005789030360453797
+career_domain_Logistics & Supply Chain,0.005664310444891615
+career_name_Dentist Specialist,0.005609712594507293
+career_name_Marine Engineer Specialist,0.005597023325411251
+career_name_Graphic Designer Specialist,0.0054953438628987245
+career_name_Teacher Specialist,0.005402092869033478
+career_name_Cybersecurity Analyst Specialist,0.005380945328970077
+career_domain_Architecture & Construction,0.005338184587592045
+career_name_Legal Advisor Specialist,0.005300161018122784
+career_name_Machine Learning Engineer Specialist,0.005294736995868446
+career_name_Content Creator Specialist,0.005267452971836325
+career_name_Chemical Engineer Specialist,0.005163503876385299
+career_name_Biomedical Engineer Specialist,0.005163067551792896
+career_name_Sports Scientist Specialist,0.005112010589562933
+career_name_Architect Specialist,0.005094401609347636
+career_name_Data Scientist Specialist,0.005086351723297607
+career_name_Public Relations Specialist Specialist,0.005077559107551865
+career_name_Civil Services Officer Specialist,0.005044239182381288
+career_name_Sports Coach Specialist,0.004990215957980985
+career_domain_Arts & Design,0.004918387244317365
+career_domain_Manufacturing,0.004886166279699693
+career_domain_Skilled Trades,0.004873545928468833
+career_name_Product Designer Specialist,0.0048505827751868826
+career_name_Policy Analyst Specialist,0.00483582038220036
+career_name_Illustrator Specialist,0.004759903162750933
+career_name_Data Analyst Specialist,0.004741863445878247
+career_name_Entrepreneur Specialist,0.004732156737096339
+career_name_Technician Specialist,0.00468315892891932
+career_name_Physiotherapist Specialist,0.004668925992775447
+career_name_Animator,0.004662975307645967
+career_name_Lawyer Specialist,0.004605990943349086
+career_name_Environmental Scientist Specialist,0.0045865551740452105
+career_name_Psychologist Specialist,0.00458173930538498
+stream_Scienc,0.004542830979538381
+career_name_Doctor Specialist,0.004534562698361525
+career_name_Education Consultant,0.0045058830875594645
+career_domain_Research,0.0045052483912740365
+stream_General,0.004455454768018664
+career_name_Social Worker Specialist,0.004429106723101516
+career_name_Chef Specialist,0.0043598894377347985
+career_name_Automotive Engineer Specialist,0.004359285475091953
+career_name_Renewable Energy Engineer Specialist,0.004250648102163534
+career_name_Travel Consultant Specialist,0.0042445302446448615
+career_name_Urban Planner Specialist,0.004232882659767823
+career_name_Investment Analyst Specialist,0.004200261692135344
+career_name_Auditor Specialist,0.004155891625473057
+career_name_Electronics Engineer Specialist,0.004135548282390532
+career_domain_Media & Communication,0.004082419593253844
+career_name_Animator Specialist,0.0040627123434405004
+career_name_Fashion Designer Specialist,0.0040580780826682495
+career_name_Medical Laboratory Scientist Specialist,0.004024554197869634
+career_name_Education Consultant Specialist,0.003974788048628083
+career_name_Accountant Specialist,0.00394482880070764
+career_name_Pilot Specialist,0.003940838083784592
+career_name_Counsellor Specialist,0.0039023656168691444
+career_name_Human Resources Specialist Specialist,0.0038579140594878925
+stream_Sceince,0.003814084858368911
+career_name_Database Administrator Specialist,0.0038003485499494755
+career_name_Research Scientist Specialist,0.003792680971786707
+interest_match_component,0.003772365568379256
+career_name_Aviation Engineer Specialist,0.0037469041424844523
+career_domain_Transportation,0.003733903578841962
+career_name_Physiotherapist,0.003730970611451084
+stream_Art,0.003726634839540873
+career_name_Pharmacist Specialist,0.003685118112195504
+career_domain_Law,0.003684718574841948
+career_domain_Finance,0.003639077951455678
+career_name_Forestry Specialist Specialist,0.0036076867951876992
+career_name_Biotechnologist Specialist,0.003596407082699133
+career_name_Agronomist Specialist,0.0035743044714094574
+career_domain_Marine,0.0035475533966793696
+career_domain_General,0.0035135633849682716
+stream_Commerce,0.0035025071898802957
+career_name_Journalist Specialist,0.003501704855544425
+career_domain_Healthcare,0.0034755109445014348
+career_domain_Technology,0.0033721737279345265
+career_name_Ui Ux Designer Specialist,0.0033409723286264245
+stream_Science,0.0033102917714278243
+career_domain_Government & Public Service,0.003300200426452399
+career_domain_Energy,0.003278035416555059
+career_name_Ai Engineer Specialist,0.003232078143517952
+career_name_Mobile App Developer Specialist,0.003217717616191242
+career_name_Supply Chain Analyst Specialist,0.0032169513706023414
+ability_match_component,0.0031665926674185997
+career_name_Marketing Specialist Specialist,0.003165603602920985
+stream_Commerece,0.0031577118088657492
+career_name_Economist Specialist,0.0031385582302801193
+max_core_match,0.003123351829290548
+career_name_Agricultural Scientist Specialist,0.0031137650282808318
+stream_Arts,0.0031116923700516027
+career_name_Medical Laboratory Scientist,0.003110682117967057
+career_name_Defence Officer Specialist,0.003103009883191777
+stream_-,0.003100949797816331
+career_name_Geneticist Specialist,0.0030978871437669854
+career_domain_Aviation,0.003096818218364785
+career_domain_Psychology & Social Services,0.0030942028319472467
+career_name_Logistics Manager Specialist,0.0030921958319544414
+academic_match_component,0.0030909737040005856
+career_name_Energy Analyst,0.0030904628736079854
+career_domain_Environment,0.00308161414568147
+career_domain_Unknown,0.003081520082108721
+career_name_Hotel Manager Specialist,0.00308110913605451
+career_domain_Education,0.0030345944664996794
+career_domain_Defence & Security,0.003018737303911513
+career_name_Financial Analyst Specialist,0.0030019280968952055
+career_name_Mechanical Engineer Specialist,0.002981097439313267
+min_core_match,0.002979332583171102
+career_name_Environmental Engineer Specialist,0.0029792082516170233
+career_domain_-,0.0029355711357641743
+career_domain_Agriculture,0.0028418488927126817
+career_domain_Hospitality & Tourism,0.00278657979163471
+career_name_Nurse,0.0027687465955269453
+career_name_Psychologist,0.002701613609920738
+career_name_Microbiologist Specialist,0.0026807983191600906
+learning_match_component,0.002645414117662807
+ability_interest_gap,0.0025606190664586624
+career_name_Welder Specialist,0.0025149619120979736
+career_domain_Fashion,0.0024921945693721663
+career_name_Business Analyst Specialist,0.002467448399159253
+career_name_Research Scientist,0.002464531031420291
+career_name_Web Developer Specialist,0.002454026179253773
+career_name_Microbiologist,0.0024306932909383457
+career_domain_Sports,0.002430088862634248
+career_domain_Null,0.0023668550915152227
+career_domain_N/A,0.002335058809958673
+stream_Sciense,0.002290327622996057
+career_name_Electrician,0.002051767268514829
+career_name_Fashion Designer,0.00203757554339169
+career_name_Civil Services Officer,0.0019539872533201105
+career_name_Supply Chain Analyst,0.0019506262268240385
+career_name_Marine Engineer,0.0019493001399958456
+career_name_Social Worker,0.0019424849547534555
+career_name_Data Analyst,0.0018905517344639893
+career_name_Renewable Energy Engineer,0.0018879760456681184
+career_name_Marketing Specialist,0.0018337852996326847
+career_name_Architect,0.0018197219805995727
+career_name_Pharmacist,0.0018172396568845734
+career_name_Doctor,0.001814041262580494
+career_name_Data Scientist,0.001732214452607008
+stream_Na,0.0017319610164710255
+career_name_Oceanographer,0.0017231028589041726
+stream_Unknown,0.0016832639090469885
+career_name_Accountant,0.0016656194221612852
+career_name_Lawyer,0.0016634919323197238
+career_name_Network Engineer Specialist,0.0016239844168581033
+career_name_Business Analyst,0.0015743826460382377
+career_name_Civil Engineer,0.0015393568872890892
+career_name_Biotechnologist,0.0014718358894452936
+career_name_Sports Scientist,0.001408851829172241
+career_name_Illustrator,0.0013973685063015738
+career_name_Defence Officer,0.001379663832699149
+career_name_Policy Analyst,0.0013182497493346211
+career_name_Environmental Engineer,0.0013046235698011021
+career_name_Mechanical Engineer,0.0013034368321023402
+career_name_Forestry Specialist,0.0012643652919871846
+career_name_Automotive Engineer,0.0012617317447808482
+career_name_Cybersecurity Analyst,0.001224092578674479
+career_name_Environmental Scientist,0.0011993221940765017
+stream_Null,0.0011915846503107361
+career_name_Hotel Manager,0.001156863783265831
+stream_N/A,0.0011149641659566373
+career_name_Financial Analyst,0.0010329387514595014
+career_name_Chemical Engineer,0.0003682463726648175
+career_name_Welder,0.0
+career_name_Teacher,0.0
+career_name_Technician,0.0
+career_name_Ui Ux Designer,0.0
+career_name_Travel Consultant,0.0
+career_name_Urban Planner,0.0
+career_name_Sports Coach,0.0
+career_name_Software Developer,0.0
+career_name_Public Relations Specialist,0.0
+career_name_Geneticist,0.0
+career_name_Graphic Designer,0.0
+career_name_Investment Analyst,0.0
+career_name_Logistics Manager,0.0
+career_name_Journalist,0.0
+career_name_Legal Advisor,0.0
+career_name_Human Resources Specialist,0.0
+career_name_Machine Learning Engineer,0.0
+career_name_Product Designer,0.0
+career_name_Mobile App Developer,0.0
+career_name_Network Engineer,0.0
+career_name_Pilot,0.0
+career_name_Web Developer,0.0
+career_name_Dentist,0.0
+career_name_Counsellor,0.0
+career_name_Content Creator,0.0
+career_name_Agricultural Scientist,0.0
+career_name_Agronomist,0.0
+career_name_Ai Engineer,0.0
+career_name_Auditor,0.0
+career_name_Aviation Engineer,0.0
+career_name_Cloud Engineer,0.0
+career_name_Chef,0.0
+career_name_Biomedical Engineer,0.0
+career_name_Economist,0.0
+career_name_Electrical Engineer,0.0
+career_name_Entrepreneur,0.0
+career_name_Electronics Engineer,0.0
+career_name_Database Administrator,0.0
+career_domain_Na,0.0
+stream_Comerce,0.0
+stream_Arst,0.0

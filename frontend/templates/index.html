@@ -1,0 +1,244 @@
+{% extends "base.html" %}
+
+{% block title %}Personalized Career Guidance & Stream Selection for Classes 7–12{% endblock %}
+
+{% block content %}
+<!-- Modern Hero Section -->
+<section class="py-5" style="background: radial-gradient(circle at 50% 0%, var(--primary-subtle) 0%, transparent 70%);">
+    <div class="container py-4">
+        <div class="row align-items-center g-5">
+            <div class="col-lg-7">
+                <div class="d-inline-flex align-items-center gap-2 px-3 py-1 mb-3 rounded-pill" style="background-color: var(--surface-card); border: 1px solid var(--border-color); box-shadow: var(--shadow-xs);">
+                    <i class="bi bi-stars text-primary"></i>
+                    <span class="small fw-semibold" style="color: var(--text-main);">AI-Powered Career & Stream Guidance for Classes 7–12</span>
+                </div>
+                <h1 class="display-5 fw-bold mb-3" style="color: var(--text-main); letter-spacing: -0.03em; line-height: 1.15;">
+                    Discover the Right Career & Stream for Your Future
+                </h1>
+                <p class="lead mb-4" style="color: var(--text-secondary); max-width: 600px; font-size: 1.1rem; line-height: 1.6;">
+                    Take a simple, grade-appropriate assessment to discover your natural strengths, explore 1,200+ verified careers, and receive personalized machine learning recommendations.
+                </p>
+                <div class="d-flex flex-wrap gap-3 mb-4">
+                    {% if current_user.is_authenticated %}
+                        {% if current_user.is_admin %}
+                            <a href="{{ url_for('admin.admin_dashboard') }}" class="btn btn-primary-custom btn-lg-custom">
+                                <i class="bi bi-speedometer2 me-1"></i> Admin Dashboard
+                            </a>
+                        {% else %}
+                            <a href="{{ url_for('assessment.instructions_page') }}" class="btn btn-primary-custom btn-lg-custom">
+                                <i class="bi bi-play-circle-fill me-1"></i> Start Assessment
+                            </a>
+                            <a href="{{ url_for('student.dashboard') }}" class="btn btn-outline-custom btn-lg-custom">
+                                <i class="bi bi-clock-history me-1"></i> My Dashboard & History
+                            </a>
+                        {% endif %}
+                    {% else %}
+                        <a href="{{ url_for('auth.register_page') }}" class="btn btn-primary-custom btn-lg-custom">
+                            <i class="bi bi-rocket-takeoff-fill me-1"></i> Start Free Assessment
+                        </a>
+                        <a href="{{ url_for('career.explorer_page') }}" class="btn btn-outline-custom btn-lg-custom">
+                            <i class="bi bi-compass me-1"></i> Explore 1,200+ Careers
+                        </a>
+                    {% endif %}
+                </div>
+                <!-- Trust & Features Badge Row -->
+                <div class="d-flex flex-wrap align-items-center gap-4 pt-2" style="color: var(--text-secondary); font-size: 0.88rem;">
+                    <div class="d-flex align-items-center gap-2">
+                        <i class="bi bi-check-circle-fill text-success"></i>
+                        <span>Class 7–12 Tailored</span>
+                    </div>
+                    <div class="d-flex align-items-center gap-2">
+                        <i class="bi bi-check-circle-fill text-success"></i>
+                        <span>1,206 Career Library</span>
+                    </div>
+                    <div class="d-flex align-items-center gap-2">
+                        <i class="bi bi-check-circle-fill text-success"></i>
+                        <span>91.65% ML Accuracy</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-lg-5">
+                <div class="card-custom p-4 card-hover-lift">
+                    <div class="d-flex align-items-center justify-content-between mb-3 pb-3 border-bottom" style="border-color: var(--border-color) !important;">
+                        <div>
+                            <span class="badge-custom badge-primary-custom mb-1">Interactive Results</span>
+                            <h5 class="fw-bold mb-0" style="color: var(--text-main);">What You Get</h5>
+                        </div>
+                        <div class="brand-icon-box" style="width: 32px; height: 32px;">
+                            <i class="bi bi-award-fill"></i>
+                        </div>
+                    </div>
+                    <div class="d-flex flex-column gap-3">
+                        <div class="d-flex align-items-start gap-3 p-3 rounded-3" style="background-color: var(--surface-subtle);">
+                            <div class="p-2 rounded-2 bg-primary text-white mt-1 d-flex align-items-center justify-content-center" style="width: 34px; height: 34px;">
+                                <i class="bi bi-graph-up-arrow"></i>
+                            </div>
+                            <div>
+                                <div class="fw-bold small mb-1" style="color: var(--text-main);">Cognitive & Interest Profile</div>
+                                <div class="small" style="color: var(--text-secondary);">Score breakdown across Math, Logic, Science, Creativity, Digital, and 10+ interest domains.</div>
+                            </div>
+                        </div>
+                        <div class="d-flex align-items-start gap-3 p-3 rounded-3" style="background-color: var(--surface-subtle);">
+                            <div class="p-2 rounded-2 bg-success text-white mt-1 d-flex align-items-center justify-content-center" style="width: 34px; height: 34px;">
+                                <i class="bi bi-bullseye"></i>
+                            </div>
+                            <div>
+                                <div class="fw-bold small mb-1" style="color: var(--text-main);">Ranked Career Matches</div>
+                                <div class="small" style="color: var(--text-secondary);">Top recommendations with match percentage, salary trends, and required skill sets.</div>
+                            </div>
+                        </div>
+                        <div class="d-flex align-items-start gap-3 p-3 rounded-3" style="background-color: var(--surface-subtle);">
+                            <div class="p-2 rounded-2 bg-success text-white mt-1 d-flex align-items-center justify-content-center" style="width: 34px; height: 34px;">
+                                <i class="bi bi-cpu"></i>
+                            </div>
+                            <div>
+                                <div class="fw-bold small mb-1" style="color: var(--text-main);">Personalized ML Recommendation</div>
+                                <div class="small" style="color: var(--text-secondary);">Trained XGBoost model matching your aptitude, cognitive skills, and interest profile.</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- How It Works (Clean 3 Steps) -->
+<section class="py-5" style="border-top: 1px solid var(--border-color); border-bottom: 1px solid var(--border-color); background-color: var(--surface-card);">
+    <div class="container py-2">
+        <div class="text-center mb-5">
+            <span class="badge-custom badge-primary-custom mb-2">How It Works in 3 Steps</span>
+            <h2 class="fw-bold" style="letter-spacing: -0.02em;">Simple 3-Step Guidance Process</h2>
+            <p class="text-muted small mx-auto" style="max-width: 520px;">Takes less than 15 minutes. Designed specifically for school students to discover their future path.</p>
+        </div>
+
+        <div class="row g-4">
+            <div class="col-md-4">
+                <div class="card-custom p-4 h-100 text-center card-hover-lift">
+                    <div class="mx-auto mb-3 brand-icon-box" style="width: 48px; height: 48px; font-size: 1.3rem;">
+                        <span>1</span>
+                    </div>
+                    <h5 class="fw-bold mb-2">Answer Level-Wise Questions</h5>
+                    <p class="small text-secondary mb-0">
+                        Class 7-8 students get foundation logic; Class 9-10 get stream exploration; Class 11-12 get stream specialization.
+                    </p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card-custom p-4 h-100 text-center card-hover-lift">
+                    <div class="mx-auto mb-3 brand-icon-box" style="width: 48px; height: 48px; font-size: 1.3rem; background: linear-gradient(135deg, #10B981, #059669);">
+                        <span>2</span>
+                    </div>
+                    <h5 class="fw-bold mb-2">ML Matching Engine</h5>
+                    <p class="small text-secondary mb-0">
+                        Our trained LightGBM model evaluates your multi-dimensional score across 1,206 careers with 91.59% accuracy.
+                    </p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card-custom p-4 h-100 text-center card-hover-lift">
+                    <div class="mx-auto mb-3 brand-icon-box" style="width: 48px; height: 48px; font-size: 1.3rem; background: linear-gradient(135deg, #F59E0B, #D97706);">
+                        <span>3</span>
+                    </div>
+                    <h5 class="fw-bold mb-2">Get AI Career Recommendations</h5>
+                    <p class="small text-secondary mb-0">
+                        Receive your ranked career recommendations, stream guidance, key strengths, and detailed career alignment reports.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Grade Cohort Guide -->
+<section class="py-5">
+    <div class="container py-2">
+        <div class="text-center mb-5">
+            <span class="badge-custom badge-neutral-custom mb-2">How This Helps Students</span>
+            <h2 class="fw-bold" style="letter-spacing: -0.02em;">Tailored For Every Stage of School</h2>
+            <p class="text-muted small mx-auto" style="max-width: 550px;">Every cohort has unique academic choices and needs. Here is how PathFinder helps at your level.</p>
+        </div>
+
+        <div class="row g-4">
+            <!-- Junior Cohort -->
+            <div class="col-lg-4">
+                <div class="card-custom p-4 h-100 d-flex flex-column">
+                    <div class="d-flex align-items-center justify-content-between mb-3">
+                        <span class="badge-custom badge-primary-custom">Junior Cohort</span>
+                        <span class="fw-bold text-primary">Class 7 – 8</span>
+                    </div>
+                    <h5 class="fw-bold mb-2">Early Interest Discovery</h5>
+                    <p class="small text-secondary mb-3">
+                        Foundational questions focused on natural curiosity, everyday problem-solving, science wonders, and digital literacy.
+                    </p>
+                    <ul class="list-unstyled small text-secondary d-flex flex-column gap-2 mb-4 mt-auto">
+                        <li><i class="bi bi-check2 text-primary me-2"></i> Zero high-school pressure</li>
+                        <li><i class="bi bi-check2 text-primary me-2"></i> Discover hobbies and subject affinities</li>
+                        <li><i class="bi bi-check2 text-primary me-2"></i> Broad field awareness</li>
+                    </ul>
+                    <a href="{{ url_for('auth.register_page') }}" class="btn btn-outline-custom w-100 btn-sm-custom">Start Class 7-8 Assessment</a>
+                </div>
+            </div>
+
+            <!-- Middle Cohort -->
+            <div class="col-lg-4">
+                <div class="card-custom p-4 h-100 d-flex flex-column" style="border-color: var(--primary);">
+                    <div class="d-flex align-items-center justify-content-between mb-3">
+                        <span class="badge-custom badge-success-custom">Crucial Transition</span>
+                        <span class="fw-bold text-success">Class 9 – 10</span>
+                    </div>
+                    <h5 class="fw-bold mb-2">Stream Selection Guidance</h5>
+                    <p class="small text-secondary mb-3">
+                        Helps students make the right stream choice for Class 11 (Science-PCM, Science-PCB, Commerce, Humanities).
+                    </p>
+                    <ul class="list-unstyled small text-secondary d-flex flex-column gap-2 mb-4 mt-auto">
+                        <li><i class="bi bi-check2 text-success me-2"></i> Objective stream suitability score</li>
+                        <li><i class="bi bi-check2 text-success me-2"></i> Identify future degree options</li>
+                        <li><i class="bi bi-check2 text-success me-2"></i> Reduces stream-switch regrets</li>
+                    </ul>
+                    <a href="{{ url_for('auth.register_page') }}" class="btn btn-primary-custom w-100 btn-sm-custom">Start Class 9-10 Assessment</a>
+                </div>
+            </div>
+
+            <!-- Senior Cohort -->
+            <div class="col-lg-4">
+                <div class="card-custom p-4 h-100 d-flex flex-column">
+                    <div class="d-flex align-items-center justify-content-between mb-3">
+                        <span class="badge-custom badge-warning-custom">Career Focus</span>
+                        <span class="fw-bold text-warning">Class 11 – 12</span>
+                    </div>
+                    <h5 class="fw-bold mb-2">College & Career Readiness</h5>
+                    <p class="small text-secondary mb-3">
+                        Stream-specialized assessments evaluating domain readiness, entrance exam focus, and university degree mapping.
+                    </p>
+                    <ul class="list-unstyled small text-secondary d-flex flex-column gap-2 mb-4 mt-auto">
+                        <li><i class="bi bi-check2 text-warning me-2"></i> Stream-stratified aptitude checks</li>
+                        <li><i class="bi bi-check2 text-warning me-2"></i> Top college entrance exam mapping</li>
+                        <li><i class="bi bi-check2 text-warning me-2"></i> Professional job role salary insights</li>
+                    </ul>
+                    <a href="{{ url_for('auth.register_page') }}" class="btn btn-outline-custom w-100 btn-sm-custom">Start Class 11-12 Assessment</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Call to Action Banner -->
+<section class="py-5" style="background-color: var(--surface-card); border-top: 1px solid var(--border-color);">
+    <div class="container text-center py-4">
+        <h2 class="fw-bold mb-3" style="letter-spacing: -0.02em;">Ready to Find Your Ideal Career Direction?</h2>
+        <p class="text-secondary mx-auto mb-4" style="max-width: 560px;">
+            Join thousands of school students discovering their strengths and setting a clear path towards success.
+        </p>
+        <div class="d-flex justify-content-center gap-3">
+            <a href="{{ url_for('auth.register_page') }}" class="btn btn-primary-custom btn-lg-custom">
+                <i class="bi bi-rocket-takeoff me-1"></i> Get Started Free
+            </a>
+            <a href="{{ url_for('career.explorer_page') }}" class="btn btn-outline-custom btn-lg-custom">
+                <i class="bi bi-compass me-1"></i> Browse Careers
+            </a>
+        </div>
+    </div>
+</section>
+{% endblock %}

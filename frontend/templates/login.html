@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+
+{% block title %}Log In - Career Guidance Platform{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6 col-lg-5">
+            <div class="card-custom p-4 p-md-5">
+                <div class="text-center mb-4">
+                    <span class="badge-custom badge-primary-custom mb-2">Student & Counsellor Portal</span>
+                    <h2 class="fw-bold mb-1" style="color: var(--text-main);">Welcome Back</h2>
+                    <p class="small mb-0" style="color: var(--text-secondary);">Sign in to access your assessment profile and recommendations</p>
+                </div>
+
+                <form method="POST" action="{{ url_for('auth.login_page') }}">
+                    <div class="mb-3">
+                        <label for="identifier" class="form-label-custom">Email or Username</label>
+                        <input type="text" class="form-control-custom" id="identifier" name="identifier" placeholder="e.g. rahul.sharma@school.edu" required autofocus>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="password" class="form-label-custom">Password</label>
+                        <input type="password" class="form-control-custom" id="password" name="password" placeholder="Enter your password" required>
+                    </div>
+
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="remember" name="remember">
+                            <label class="form-check-label small" style="color: var(--text-secondary);" for="remember">Remember me</label>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary-custom w-100 py-2 mb-3">
+                        <i class="bi bi-box-arrow-in-right me-1"></i> Log In
+                    </button>
+                </form>
+
+                <div class="text-center small mt-3" style="color: var(--text-secondary);">
+                    Don't have an account? <a href="{{ url_for('auth.register_page') }}" class="fw-semibold text-primary">Register here</a>
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

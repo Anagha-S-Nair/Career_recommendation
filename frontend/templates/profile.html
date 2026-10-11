@@ -1,0 +1,225 @@
+{% extends 'base.html' %}
+
+{% block title %}My Profile & Academic Performance - {{ student.full_name }}{% endblock %}
+
+{% block content %}
+<div class="container py-5" style="max-width: 760px;">
+    <!-- Onboarding Welcome Banner -->
+    {% if is_onboarding %}
+    <div class="card-custom p-4 mb-4 border-primary shadow-sm" style="background: linear-gradient(135deg, rgba(79, 70, 229, 0.10) 0%, rgba(124, 58, 237, 0.06) 100%);">
+        <div class="d-flex align-items-center gap-3">
+            <div class="brand-icon-box" style="width: 48px; height: 48px; font-size: 1.4rem;">
+                <i class="bi bi-mortarboard-fill"></i>
+            </div>
+            <div>
+                <h4 class="fw-bold mb-1" style="color: var(--text-main);">Welcome, {{ student.first_name }}! 👋</h4>
+                <p class="small mb-0" style="color: var(--text-secondary);">
+                    Just one quick step before starting: share your approximate overall score so our AI engine can tailor career suggestions to your academic level.
+                </p>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+
+    <div class="card-custom p-4 p-md-5 shadow-sm">
+        <div class="d-flex justify-content-between align-items-center mb-4 pb-3 border-bottom flex-wrap gap-2" style="border-color: var(--border-color) !important;">
+            <div>
+                <span class="badge-custom badge-primary-custom mb-1">Student Profile</span>
+                <h2 class="fw-bold mb-0" style="color: var(--text-main);">Academic Profile</h2>
+            </div>
+            <div class="text-end">
+                <span class="badge-custom badge-neutral-custom" style="font-size: 0.95rem;">Class {{ student.class_level }}</span>
+            </div>
+        </div>
+
+        <form method="POST" action="{{ url_for('student.profile_page', onboarding='1' if is_onboarding else '0') }}" id="student-profile-form">
+            {% if is_onboarding %}
+            <input type="hidden" name="onboarding" value="1">
+            {% endif %}
+
+            <!-- SECTION 1: BASIC INFORMATION -->
+            <h5 class="fw-bold mb-3" style="color: var(--text-main);">
+                <i class="bi bi-person-fill text-primary me-2"></i> Basic Details
+            </h5>
+
+            <div class="row g-3 mb-4">
+                <div class="col-sm-6">
+                    <label for="first_name" class="form-label-custom">First Name <span class="text-danger">*</span></label>
+                    <input type="text" class="form-control-custom" id="first_name" name="first_name" value="{{ student.first_name }}" required>
+                </div>
+                <div class="col-sm-6">
+                    <label for="last_name" class="form-label-custom">Last Name <span class="text-danger">*</span></label>
+                    <input type="text" class="form-control-custom" id="last_name" name="last_name" value="{{ student.last_name or '' }}" required>
+                </div>
+
+                <div class="col-sm-6">
+                    <label for="class_level" class="form-label-custom">Current Class / Grade <span class="text-danger">*</span></label>
+                    <select class="form-select-custom" id="class_level" name="class_level" required onchange="toggleStreamSelection(this.value)">
+                        {% for c in [7, 8, 9, 10, 11, 12] %}
+                        <option value="{{ c }}" {% if student.class_level == c %}selected{% endif %}>Class {{ c }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="col-sm-6">
+                    <label for="board" class="form-label-custom">Educational Board</label>
+                    <select class="form-select-custom" id="board" name="board">
+                        <option value="CBSE" {% if student.board == 'CBSE' or not student.board %}selected{% endif %}>CBSE</option>
+                        <option value="ICSE" {% if student.board == 'ICSE' or student.board == 'ICSE / ISC' %}selected{% endif %}>ICSE / ISC</option>
+                        <option value="State Board" {% if 'State' in (student.board or '') %}selected{% endif %}>State Board</option>
+                        <option value="IB" {% if student.board == 'IB' %}selected{% endif %}>IB (International)</option>
+                        <option value="Cambridge" {% if 'Cambridge' in (student.board or '') %}selected{% endif %}>Cambridge / IGCSE</option>
+                    </select>
+                </div>
+
+                <!-- Stream (Visible only for Class 11 & 12) -->
+                <div class="col-12 {% if student.class_level not in [11, 12] %}d-none{% endif %}" id="stream_container">
+                    <label for="stream" class="form-label-custom text-primary fw-semibold">
+                        <i class="bi bi-diagram-3 me-1"></i> Higher Secondary Stream
+                    </label>
+                    <select class="form-select-custom" id="stream" name="stream">
+                        <option value="Science-PCM" {% if student.stream == 'Science-PCM' or not student.stream %}selected{% endif %}>Science - PCM (Physics, Chemistry, Math)</option>
+                        <option value="Science-PCB" {% if student.stream == 'Science-PCB' %}selected{% endif %}>Science - PCB (Physics, Chemistry, Biology)</option>
+                        <option value="Commerce" {% if student.stream == 'Commerce' %}selected{% endif %}>Commerce</option>
+                        <option value="Humanities" {% if student.stream == 'Humanities' %}selected{% endif %}>Humanities / Arts</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- SECTION 2: ACADEMIC SCORE (SIMPLE) -->
+            <div class="pt-3 border-top mb-4" style="border-color: var(--border-color) !important;">
+                <h5 class="fw-bold mb-1" style="color: var(--text-main);">
+                    <i class="bi bi-award text-primary me-2"></i> Academic Performance
+                </h5>
+                <p class="small mb-3" style="color: var(--text-secondary);">
+                    Enter your overall percentage or GPA from your last exam or report card.
+                </p>
+
+                <div class="card-subtle p-4 rounded-3 mb-4">
+                    <div class="row align-items-center g-3">
+                        <div class="col-sm-7">
+                            <label for="overall_percentage" class="form-label-custom fw-semibold mb-1">
+                                Overall Percentage / Marks (%)
+                            </label>
+                            <div class="d-flex align-items-center gap-3">
+                                <input type="range" class="form-range" id="score_range" min="40" max="100" step="1" 
+                                       value="{{ academic.overall_percentage | round(0) | int if academic and academic.overall_percentage else 78 }}"
+                                       oninput="syncScore(this.value)">
+                            </div>
+                        </div>
+                        <div class="col-sm-5 text-sm-end">
+                            <div class="d-inline-flex align-items-center">
+                                <input type="number" class="form-control-custom text-center fw-bold fs-4" id="overall_percentage" name="overall_percentage" 
+                                       min="35" max="100" style="width: 100px;" 
+                                       value="{{ academic.overall_percentage | round(0) | int if academic and academic.overall_percentage else 78 }}"
+                                       oninput="syncRange(this.value)" required>
+                                <span class="fs-4 ms-2 fw-bold text-primary">%</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Favorite Subject Strengths (Optional Pills) -->
+                <label class="form-label-custom fw-semibold mb-2">
+                    <i class="bi bi-star-fill text-warning me-1"></i> Select Your Strongest / Favorite Subjects (Optional):
+                </label>
+                <div class="d-flex flex-wrap gap-2 mb-3" id="favorite-subject-pills">
+                    {% set favs = [
+                        ('Mathematics', 'math_score'),
+                        ('Science / Physics', 'science_score'),
+                        ('Computer Science', 'cs_score'),
+                        ('Biology', 'biology_score'),
+                        ('English', 'english_score'),
+                        ('Social Studies', 'social_science_score'),
+                        ('Commerce / Economics', 'economics_score')
+                    ] %}
+                    {% for name, field in favs %}
+                    <label class="pill-toggle">
+                        <input type="checkbox" class="d-none pill-checkbox" data-target="{{ field }}" 
+                               {% if academic and academic[field] and academic[field] > 60 %}checked{% endif %}>
+                        <span class="badge-custom badge-neutral-custom pill-label cursor-pointer p-2 px-3">
+                            {{ name }}
+                        </span>
+                        <!-- Hidden score input that syncs with overall percentage if checked -->
+                        <input type="hidden" name="{{ field }}" id="{{ field }}" 
+                               value="{{ academic[field] if academic and academic[field] is not none else '' }}">
+                    </label>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <!-- Form Actions -->
+            <div class="d-flex justify-content-between align-items-center pt-3">
+                {% if is_onboarding %}
+                <button type="submit" class="btn btn-primary-custom btn-lg-custom w-100 py-3">
+                    Save & Start Career Assessment <i class="bi bi-arrow-right ms-2"></i>
+                </button>
+                {% else %}
+                <a href="{{ url_for('student.dashboard') }}" class="btn btn-outline-custom">Cancel</a>
+                <button type="submit" class="btn btn-primary-custom px-4 py-2">
+                    <i class="bi bi-check2 me-1"></i> Save Changes
+                </button>
+                {% endif %}
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+function syncScore(val) {
+    document.getElementById('overall_percentage').value = val;
+    updatePillHiddenInputs(val);
+}
+
+function syncRange(val) {
+    if (val >= 35 && val <= 100) {
+        document.getElementById('score_range').value = val;
+        updatePillHiddenInputs(val);
+    }
+}
+
+function toggleStreamSelection(classVal) {
+    const streamContainer = document.getElementById('stream_container');
+    if (classVal === '11' || classVal === '12') {
+        streamContainer.style.display = 'block';
+    } else {
+        streamContainer.style.display = 'none';
+    }
+}
+
+function updatePillHiddenInputs(score) {
+    document.querySelectorAll('.pill-checkbox').forEach(cb => {
+        const targetId = cb.getAttribute('data-target');
+        const input = document.getElementById(targetId);
+        if (input) {
+            input.value = cb.checked ? score : '';
+        }
+    });
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    // Style pill toggles
+    document.querySelectorAll('.pill-toggle').forEach(pill => {
+        const cb = pill.querySelector('.pill-checkbox');
+        const label = pill.querySelector('.pill-label');
+        
+        function updateStyle() {
+            if (cb.checked) {
+                label.className = 'badge-custom badge-primary-custom pill-label cursor-pointer p-2 px-3';
+            } else {
+                label.className = 'badge-custom badge-neutral-custom pill-label cursor-pointer p-2 px-3';
+            }
+        }
+        
+        cb.addEventListener('change', () => {
+            updateStyle();
+            const currentScore = document.getElementById('overall_percentage').value || 78;
+            updatePillHiddenInputs(currentScore);
+        });
+        
+        updateStyle();
+    });
+});
+</script>
+{% endblock %}

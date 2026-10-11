@@ -1,0 +1,65 @@
+{% extends 'base.html' %}
+
+{% block title %}Assessment Instructions - Class {{ student.class_level }}{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-7 col-md-9">
+            <div class="card-custom p-4 p-md-5 shadow-sm text-center">
+                <div class="brand-icon-box mx-auto mb-3" style="width: 60px; height: 60px; font-size: 1.8rem;">
+                    <i class="bi bi-compass-fill"></i>
+                </div>
+                
+                <span class="badge-custom badge-primary-custom mb-2">Class {{ student.class_level }} Questionnaire</span>
+                <h2 class="fw-bold mb-2" style="color: var(--text-main);">Career Discovery Assessment</h2>
+                <p class="small mb-4" style="color: var(--text-secondary);">
+                    This questionnaire helps identify careers aligned with your aptitudes, interests, and strengths.
+                </p>
+
+                <!-- 3 Quick Highlights -->
+                <div class="row g-3 mb-4 text-start">
+                    <div class="col-12">
+                        <div class="card-subtle p-3 d-flex align-items-center gap-3">
+                            <i class="bi bi-heart-fill text-danger fs-4"></i>
+                            <div>
+                                <strong style="color: var(--text-main);">Answer Honestly</strong>
+                                <div class="small" style="color: var(--text-secondary);">There are no right or wrong answers in interest questions. Choose what you truly enjoy.</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        <div class="card-subtle p-3 d-flex align-items-center gap-3">
+                            <i class="bi bi-cloud-arrow-up-fill text-primary fs-4"></i>
+                            <div>
+                                <strong style="color: var(--text-main);">Automatic Saving</strong>
+                                <div class="small" style="color: var(--text-secondary);">Every response is saved immediately. You can take your time and navigate between questions freely.</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        <div class="card-subtle p-3 d-flex align-items-center gap-3">
+                            <i class="bi bi-award-fill text-success fs-4"></i>
+                            <div>
+                                <strong style="color: var(--text-main);">Personalized Top Recommendations</strong>
+                                <div class="small" style="color: var(--text-secondary);">Upon completion, our Machine Learning engine instantly generates your Top 5 compatible careers.</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="d-flex flex-wrap justify-content-between align-items-center gap-3 pt-3 border-top" style="border-color: var(--border-color) !important;">
+                    <a href="{{ url_for('student.dashboard') }}" class="btn btn-outline-custom">
+                        <i class="bi bi-arrow-left me-1"></i> Dashboard
+                    </a>
+                    <form method="POST" action="{{ url_for('assessment.start_assessment_action') }}" class="m-0">
+                        <button type="submit" class="btn btn-primary-custom btn-lg-custom px-4 py-2">
+                            Begin Assessment <i class="bi bi-arrow-right ms-2"></i>
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

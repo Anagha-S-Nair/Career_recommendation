@@ -1,0 +1,23 @@
+model:
+  name: XGBoost
+  version: V17.0-XGBoost-SMOTE-92pct
+  threshold: 0.5
+  confidence_margin: 0.27
+domain_requirements:
+  information technology:
+    logical_reasoning: 60.0
+    problem_solving: 55.0
+  engineering:
+    mathematical_ability: 60.0
+    scientific_reasoning: 55.0
+  finance & commerce:
+    mathematical_ability: 55.0
+    analytical_ability: 55.0
+  healthcare & life sciences:
+    scientific_reasoning: 60.0
+    learning_ability: 55.0
+  arts & creative design:
+    creativity: 60.0
+    spatial_ability: 55.0
+default_requirements:
+  learning_ability: 40.0

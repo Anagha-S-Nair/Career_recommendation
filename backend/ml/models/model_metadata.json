@@ -1,0 +1,91 @@
+{
+  "model_name": "PathFinder Career Compatibility Classifier",
+  "model_version": "V17.0-XGBoost-SMOTE-92pct",
+  "algorithm": "XGBoost",
+  "accuracy": 91.65,
+  "f1_score": 0.9415,
+  "roc_auc": 97.28,
+  "precision": 94.28,
+  "recall": 94.02,
+  "smote_balancing": true,
+  "training_samples_after_smote": 58390,
+  "best_parameters": {
+    "n_estimators": 800,
+    "max_depth": 6,
+    "learning_rate": 0.03,
+    "num_leaves": null
+  },
+  "models_evaluated": {
+    "LightGBM": {
+      "overall_accuracy": 91.55,
+      "f1_score": 0.941,
+      "roc_auc": 97.14,
+      "precision": 93.93,
+      "recall": 94.27,
+      "train_time_s": 14.22
+    },
+    "XGBoost": {
+      "overall_accuracy": 91.65,
+      "f1_score": 0.9415,
+      "roc_auc": 97.28,
+      "precision": 94.28,
+      "recall": 94.02,
+      "train_time_s": 19.59
+    },
+    "Random Forest": {
+      "overall_accuracy": 90.94,
+      "f1_score": 0.9352,
+      "roc_auc": 97.25,
+      "precision": 95.7,
+      "recall": 91.44,
+      "train_time_s": 29.19
+    }
+  },
+  "label_engineering": {
+    "method": "Weighted z-score composite with Gaussian noise",
+    "score_cols": [
+      "composite_alignment_index",
+      "ability_interest_synergy",
+      "geometric_core_synergy",
+      "harmonic_core_match",
+      "holistic_synergy",
+      "min_core_match",
+      "max_core_match"
+    ],
+    "weights": [
+      0.3,
+      0.15,
+      0.15,
+      0.15,
+      0.1,
+      0.075,
+      0.075
+    ],
+    "noise_std": 0.3,
+    "random_seed": 42,
+    "class_balance": "72% compatible / 28% incompatible"
+  },
+  "features_count": 17,
+  "feature_type": "14 numerical + 3 categorical (OHE)",
+  "feature_columns": [
+    "age",
+    "class",
+    "ability_match_component",
+    "interest_match_component",
+    "academic_match_component",
+    "learning_match_component",
+    "composite_alignment_index",
+    "ability_interest_synergy",
+    "ability_interest_gap",
+    "min_core_match",
+    "max_core_match",
+    "harmonic_core_match",
+    "geometric_core_synergy",
+    "holistic_synergy",
+    "stream",
+    "career_domain",
+    "career_name"
+  ],
+  "trained_at": "2026-10-08T16:18:29Z",
+  "test_set_size": 4936
+}

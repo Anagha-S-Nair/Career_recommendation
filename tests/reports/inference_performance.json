@@ -1,0 +1,18 @@
+{
+  "model_version": "V7.2",
+  "algorithm": "XGBoost",
+  "candidates_evaluated": 1206,
+  "timings_seconds": {
+    "feature_building_sec": 2.6911,
+    "model_inference_sec": 0.0918,
+    "full_recommendation_pipeline_sec": 0.0228
+  },
+  "timings_milliseconds": {
+    "feature_building_ms": 2691.14,
+    "model_inference_ms": 91.77,
+    "full_recommendation_pipeline_ms": 22.81
+  },
+  "top_1_career": "Lawyer Specialist 840",
+  "top_1_score": 99.85,
+  "status": "PASS"
+}

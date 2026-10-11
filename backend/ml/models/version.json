@@ -1,0 +1,7 @@
+{
+  "version": "V17.0-XGBoost-SMOTE-92pct",
+  "trained_at": "2026-10-08T16:18:29Z",
+  "status": "production_ready",
+  "accuracy": 91.65,
+  "algorithm": "XGBoost"
+}

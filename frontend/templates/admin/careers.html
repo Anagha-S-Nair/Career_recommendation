@@ -1,0 +1,118 @@
+{% extends 'base.html' %}
+
+{% block title %}Manage Careers - Admin Panel{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-2">
+        <div>
+            <h2 class="fw-bold mb-1">Career Profiles Management</h2>
+            <p class="text-muted small mb-0">Manage 25+ career pathways, domains, requirements, and educational milestones</p>
+        </div>
+        <button class="btn btn-primary-custom" data-bs-toggle="modal" data-bs-target="#createCareerModal">
+            <i class="bi bi-plus-circle me-1"></i> Add New Career
+        </button>
+    </div>
+
+    <!-- Career List Table -->
+    <div class="card card-custom p-4">
+        <div class="table-responsive">
+            <table class="table table-hover align-middle mb-0">
+                <thead class="table-light">
+                    <tr>
+                        <th>Code</th>
+                        <th>Career Name</th>
+                        <th>Domain</th>
+                        <th>Minimum Degree</th>
+                        <th>Work Environment</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for c in careers %}
+                    <tr>
+                        <td><code>{{ c.career_code }}</code></td>
+                        <td><strong>{{ c.career_name }}</strong></td>
+                        <td><span class="badge bg-primary-subtle text-primary">{{ c.domain.domain_name if c.domain else '' }}</span></td>
+                        <td>{{ c.minimum_education }}</td>
+                        <td>{{ c.work_environment }}</td>
+                        <td>
+                            {% if c.is_active %}
+                                <span class="badge bg-success-subtle text-success border border-success-subtle">Active</span>
+                            {% else %}
+                                <span class="badge bg-danger-subtle text-danger border border-danger-subtle">Inactive</span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            <a href="{{ url_for('career.career_detail_page', career_id=c.id) }}" class="btn btn-sm btn-outline-primary" target="_blank">
+                                <i class="bi bi-eye"></i> View
+                            </a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- Modal: Create Career -->
+<div class="modal fade" id="createCareerModal" tabindex="-1" aria-labelledby="createCareerModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content border-0 shadow-lg">
+            <form method="POST" action="{{ url_for('admin.manage_careers') }}">
+                <div class="modal-header">
+                    <h5 class="modal-title fw-bold" id="createCareerModalLabel">Add Career Profile</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body p-4">
+                    <div class="row g-3 mb-3">
+                        <div class="col-md-4">
+                            <label class="form-label fw-semibold small">Career Code</label>
+                            <input type="text" class="form-control" name="career_code" required placeholder="e.g. CAR-ENV-01">
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label fw-semibold small">Career Title</label>
+                            <input type="text" class="form-control" name="career_name" required placeholder="e.g. Renewable Energy Specialist">
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label fw-semibold small">Domain</label>
+                            <select class="form-select" name="domain_id" required>
+                                {% for d in domains %}
+                                    <option value="{{ d.id }}">{{ d.domain_name }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold small">Description</label>
+                        <textarea class="form-control" name="description" rows="3" required placeholder="Detailed overview of the profession..."></textarea>
+                    </div>
+
+                    <div class="row g-3 mb-3">
+                        <div class="col-md-6">
+                            <label class="form-label fw-semibold small">Minimum Education</label>
+                            <input type="text" class="form-control" name="minimum_education" required placeholder="e.g. Bachelor's Degree (B.Tech / B.Sc)">
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label fw-semibold small">Typical Education</label>
+                            <input type="text" class="form-control" name="typical_education" required placeholder="e.g. B.Tech in Energy Engineering">
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold small">Career Progression Pathway Summary</label>
+                        <input type="text" class="form-control" name="pathway" placeholder="e.g. Class 10 -> Class 11-12 Science -> B.Tech -> Junior Engineer -> Director">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-light" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-primary-custom px-4">Save Career</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

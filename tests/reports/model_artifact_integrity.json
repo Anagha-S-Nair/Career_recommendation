@@ -1,0 +1,37 @@
+{
+  "generated_at": "2026-10-08 16:20:38Z",
+  "files": {
+    "model.joblib": {
+      "sha256": "3ade85242028d189b31a42903ccdec3c539b5aaec71b6e7c2844ade368804377",
+      "size_bytes": 2180173
+    },
+    "preprocessor.joblib": {
+      "sha256": "1338ca2f7da0084930c702836c2efa49ebc60b9ab634a7646f9f0011c9863040",
+      "size_bytes": 9348
+    },
+    "classes.json": {
+      "sha256": "d0dbc48436a6ec4e5320c7304a8bdd7011b80df8102398128910917a8ae715bf",
+      "size_bytes": 4798
+    },
+    "model_config.json": {
+      "sha256": "e4a73b9bd0ef8f6955d4e194f26dc8bd0fe4d517615ee6ae89d9d9ac1fae9b6d",
+      "size_bytes": 234
+    },
+    "model_metadata.json": {
+      "sha256": "b57952a31c425f0998a53913d5b7aee6be45729eeffc76a6d91e7196d7672221",
+      "size_bytes": 2236
+    },
+    "version.json": {
+      "sha256": "5ddab7b5194f5b515a3ee79a77646716c6530428dc548c556ea426d345ab2863",
+      "size_bytes": 169
+    },
+    "training_history.json": {
+      "sha256": "047814b92c64bc284c98c8fc5790f80afff7c66afea257a9baa296b52c6a2530",
+      "size_bytes": 312
+    },
+    "career_knowledge_requirements.csv": {
+      "sha256": "c20948d0c7309e041177be9410b463b2bed950c8c311fdd883fa8088c9438f4b",
+      "size_bytes": 121292
+    }
+  }
+}
