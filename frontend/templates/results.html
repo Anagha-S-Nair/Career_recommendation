@@ -1,27 +1,48 @@
 {% extends "base.html" %}
 
-{% block title %}Your Career Recommendations - Assessment #{{ session.id }}{% endblock %}
+{% block title %}Your Career Matches - Assessment #{{ session.id }}{% endblock %}
 
 {% block content %}
-<div class="container py-4">
-    <!-- Web Header Banner -->
-    <div class="d-flex flex-wrap align-items-center justify-content-between gap-3 mb-4 pb-3 border-bottom d-print-none" style="border-color: var(--border-color) !important;">
+<div class="container py-3 py-md-4">
+    <!-- Print-Only Official Report Header -->
+    <div class="print-only-header mb-3">
+        <div class="d-flex justify-content-between align-items-center">
+            <div>
+                <h2 class="h4 fw-bold mb-1">PathFinder Student Career Guidance Report</h2>
+                <p class="small text-muted mb-0">
+                    Student: {{ student.user.username if student.user else 'Student' }} &bull; Class {{ student.class_level }} &bull; Assessment Session #{{ session.id }}
+                </p>
+            </div>
+            <div class="text-end">
+                <span class="badge-custom badge-primary-custom">Confidential Career Profile</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Web Header Banner: Compact & Actions Neatly Organized -->
+    <div class="d-flex flex-wrap align-items-center justify-content-between gap-3 mb-3 pb-3 border-bottom d-print-none" style="border-color: var(--border-color) !important;">
         <div>
             <div class="d-flex align-items-center gap-2 mb-1">
                 <span class="badge-custom badge-primary-custom">Assessment Complete</span>
                 <span class="badge-custom badge-neutral-custom">Class {{ student.class_level }}</span>
             </div>
-            <h1 class="h2 fw-bold mb-1" style="color: var(--text-main);">Your Career Matches</h1>
+            <h1 class="h3 fw-bold mb-1" style="color: var(--text-main);">Your Career Matches</h1>
             <p class="small mb-0" style="color: var(--text-secondary);">
                 Based on your cognitive strengths, interests, and academic profile, here are your best-fitting careers.
             </p>
         </div>
-        <div class="d-flex gap-2">
-            <button onclick="window.print()" class="btn btn-outline-custom">
+        <div class="d-flex flex-wrap align-items-center gap-2">
+            <button onclick="window.print()" class="btn btn-outline-custom btn-sm">
                 <i class="bi bi-printer me-1"></i> Print / Save PDF
             </button>
-            <a href="{{ url_for('assessment.instructions_page') }}" class="btn btn-primary-custom">
+            <a href="{{ url_for('assessment.instructions_page') }}" class="btn btn-outline-custom btn-sm">
                 <i class="bi bi-arrow-clockwise me-1"></i> Retake Test
+            </a>
+            <a href="{{ url_for('student.dashboard') }}" class="btn btn-outline-custom btn-sm">
+                <i class="bi bi-speedometer2 me-1"></i> My Dashboard
+            </a>
+            <a href="{{ url_for('career.explorer_page') }}" class="btn btn-primary-custom btn-sm">
+                <i class="bi bi-compass me-1"></i> Explore More Careers
             </a>
         </div>
     </div>
@@ -35,190 +56,202 @@
     {% set top_1_id = top_1.career_id if top_1.career_id is defined else (top_1.career.id if top_1.career is defined else None) %}
     {% set top_1_min_edu = top_1.minimum_education if top_1.minimum_education is defined else (top_1.career.minimum_education if top_1.career is defined else None) %}
 
-    <!-- Top 1 Primary Match Hero Card -->
-    <div class="card-custom p-4 p-md-5 mb-4 shadow-sm" style="border-left: 5px solid var(--primary);">
-        <div class="row align-items-center g-4">
-            <div class="col-lg-8">
-                <div class="d-flex align-items-center gap-2 mb-2">
+    <!-- Top #1 Primary Career Recommendation Card (Prominent & Clean) -->
+    <div class="card-custom p-4 mb-3" style="border-left: 4px solid var(--primary);">
+        <div class="row align-items-center g-3">
+            <div class="col-lg-8 col-md-7">
+                <div class="d-flex flex-wrap align-items-center gap-2 mb-2">
                     <span class="badge-custom badge-primary-custom">
-                        <i class="bi bi-star-fill text-warning me-1"></i> Top #1 Primary Recommendation
+                        <i class="bi bi-star-fill me-1" style="font-size: 0.7rem;"></i> Top #1 Primary Recommendation
                     </span>
                     <span class="badge-custom badge-neutral-custom">{{ top_1_domain }}</span>
                 </div>
-                <h2 class="display-6 fw-bold mb-2" style="color: var(--text-main);">
+                <h2 class="h3 fw-bold mb-2" style="color: var(--text-main);">
                     {{ top_1_name }}
                 </h2>
-                <p class="mb-3" style="color: var(--text-secondary);">
+                <p class="small mb-3 text-secondary" style="line-height: 1.55; max-width: 660px;">
                     {{ top_1_desc }}
                 </p>
 
-                <div class="d-flex flex-wrap gap-2 mb-3">
-                    {% if top_1_min_edu %}
-                    <span class="badge-custom badge-neutral-custom">
-                        <i class="bi bi-mortarboard me-1"></i> Education: {{ top_1_min_edu }}
-                    </span>
-                    {% endif %}
+                {% if top_1_min_edu %}
+                <div class="d-inline-flex align-items-center gap-1 small text-secondary">
+                    <i class="bi bi-mortarboard text-primary me-1"></i>
+                    <span class="fw-semibold">Education Requirement:</span> {{ top_1_min_edu }}
                 </div>
-
-
+                {% endif %}
             </div>
 
-            <!-- Score Badge -->
-            <div class="col-lg-4 text-center">
-                <div class="card-subtle p-4 rounded-3">
-                    <div class="small fw-semibold mb-1" style="color: var(--text-secondary);">Match Compatibility</div>
-                    <div class="display-3 fw-bold text-primary mb-1">{{ top_1_score | round(0) | int }}%</div>
-                    {% if top_1_score >= 75 %}
-                    <span class="badge bg-success-subtle text-success fw-bold px-3 py-1">Excellent Fit</span>
-                    {% elif top_1_score >= 60 %}
-                    <span class="badge bg-primary-subtle text-primary fw-bold px-3 py-1">Strong Match</span>
-                    {% elif top_1_score >= 45 %}
-                    <span class="badge bg-warning-subtle text-warning fw-bold px-3 py-1">Moderate Fit</span>
-                    {% else %}
-                    <span class="badge bg-secondary-subtle text-secondary fw-bold px-3 py-1">Exploratory Match</span>
+            <!-- Score Block -->
+            <div class="col-lg-4 col-md-5">
+                <div class="p-3 rounded-2 text-center text-md-end" style="background-color: var(--surface-subtle); border: 1px solid var(--border-color);">
+                    <div class="text-uppercase text-secondary fw-semibold mb-1" style="font-size: 0.72rem; letter-spacing: 0.04em;">Match Compatibility</div>
+                    <div class="d-flex align-items-baseline justify-content-center justify-content-md-end gap-2 mb-2">
+                        <span class="fw-bold" style="font-size: 2.5rem; line-height: 1; color: var(--primary);">{{ top_1_score | round(0) | int }}%</span>
+                        {% if top_1_score >= 75 %}
+                        <span class="badge bg-success-subtle text-success fw-semibold px-2 py-1" style="font-size: 0.75rem;">Excellent Fit</span>
+                        {% elif top_1_score >= 60 %}
+                        <span class="badge bg-primary-subtle text-primary fw-semibold px-2 py-1" style="font-size: 0.75rem;">Strong Match</span>
+                        {% elif top_1_score >= 45 %}
+                        <span class="badge bg-warning-subtle text-warning fw-semibold px-2 py-1" style="font-size: 0.75rem;">Moderate Fit</span>
+                        {% else %}
+                        <span class="badge bg-secondary-subtle text-secondary fw-semibold px-2 py-1" style="font-size: 0.75rem;">Exploratory</span>
+                        {% endif %}
+                    </div>
+                    {% if top_1_id %}
+                    <a href="{{ url_for('career.career_detail_page', career_id=top_1_id) }}" class="btn btn-outline-custom btn-sm w-100 w-md-auto">
+                        View Details <i class="bi bi-chevron-right ms-1"></i>
+                    </a>
                     {% endif %}
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Academic Stream Guidance for School Students -->
+    <!-- Education Pathway & Compatibility Breakdown (Efficient 2-Column Row) -->
     {% set top_domain_lower = top_1_domain | lower %}
     {% if 'technology' in top_domain_lower or 'engineering' in top_domain_lower or 'aviation' in top_domain_lower or 'architecture' in top_domain_lower %}
         {% set rec_stream = 'Science (PCM) — Physics, Chemistry, Mathematics' %}
         {% set rec_stream_reason = 'Strongly aligns with your technology, analytical logic, and engineering affinities.' %}
-        {% set rec_stream_badge = 'bg-primary-subtle text-primary' %}
     {% elif 'healthcare' in top_domain_lower or 'medical' in top_domain_lower or 'agriculture' in top_domain_lower or 'life sciences' in top_domain_lower %}
         {% set rec_stream = 'Science (PCB) — Physics, Chemistry, Biology' %}
         {% set rec_stream_reason = 'Directly matches your scientific reasoning, observation, and healthcare/life sciences inclinations.' %}
-        {% set rec_stream_badge = 'bg-success-subtle text-success' %}
     {% elif 'finance' in top_domain_lower or 'commerce' in top_domain_lower or 'business' in top_domain_lower or 'logistics' in top_domain_lower %}
         {% set rec_stream = 'Commerce with Mathematics / Applied Statistics' %}
         {% set rec_stream_reason = 'Optimally supports your analytical thinking, economic interest, and business management goals.' %}
-        {% set rec_stream_badge = 'bg-warning-subtle text-warning' %}
     {% else %}
         {% set rec_stream = 'Humanities & Social Sciences / Creative Design' %}
         {% set rec_stream_reason = 'Empowers your creative expression, communication strengths, and societal impact interests.' %}
-        {% set rec_stream_badge = 'bg-info-subtle text-info' %}
     {% endif %}
 
-    <div class="card-custom p-4 mb-4 shadow-sm" style="border-left: 5px solid var(--accent, #6366F1);">
-        <div class="d-flex flex-wrap align-items-center justify-content-between gap-3">
-            <div>
-                <span class="badge {{ rec_stream_badge }} fw-bold mb-1">
-                    <i class="bi bi-mortarboard-fill me-1"></i> Recommended Higher Secondary Stream
-                </span>
-                <h5 class="fw-bold mb-1" style="color: var(--text-main);">{{ rec_stream }}</h5>
-                <p class="small mb-0" style="color: var(--text-secondary);">
+    {% set ability_score = top_1.match_breakdown.ability_match if top_1 and top_1.match_breakdown and top_1.match_breakdown.ability_match is defined else (profile.scores.problem_solving if profile and profile.scores and profile.scores.problem_solving is defined else 78.0) %}
+    {% set interest_score = top_1.match_breakdown.interest_match if top_1 and top_1.match_breakdown and top_1.match_breakdown.interest_match is defined else (profile.scores.technology_interest if profile and profile.scores and profile.scores.technology_interest is defined else 75.0) %}
+    {% set academic_score = profile.academic.overall_percentage if profile and profile.academic and profile.academic.overall_percentage is defined else 80.0 %}
+    {% set learning_score = profile.scores.learning_ability if profile and profile.scores and profile.scores.learning_ability is defined else 80.0 %}
+
+    <div class="row g-3 mb-3">
+        <!-- Recommended Education Pathway -->
+        <div class="col-lg-6">
+            <div class="card-custom p-3 p-md-4 h-100">
+                <div class="d-flex align-items-center justify-content-between gap-2 mb-3 pb-2 border-bottom" style="border-color: var(--border-color) !important;">
+                    <div class="d-flex align-items-center gap-2">
+                        <i class="bi bi-mortarboard text-primary"></i>
+                        <h5 class="h6 fw-bold mb-0" style="color: var(--text-main);">Recommended Education Pathway</h5>
+                    </div>
+                    <span class="badge-custom badge-neutral-custom" style="font-size: 0.7rem;">Class 11 & 12 Stream</span>
+                </div>
+                <div class="fw-bold mb-2" style="font-size: 1.05rem; color: var(--text-main);">
+                    {{ rec_stream }}
+                </div>
+                <p class="small text-secondary mb-0" style="line-height: 1.55;">
                     {{ rec_stream_reason }}
                 </p>
             </div>
-            <div class="text-end">
-                <span class="badge-custom badge-neutral-custom">Ideal Class 11 & 12 Pathway</span>
-            </div>
         </div>
-    </div>
 
-    <!-- Match Components Breakdown (4 Simple Cards) -->
-    <div class="card-custom p-4 mb-4 shadow-sm">
-        <h5 class="fw-bold mb-3" style="color: var(--text-main);">Compatibility Breakdown</h5>
-
-        {% set ability_score = top_1.match_breakdown.ability_match if top_1 and top_1.match_breakdown and top_1.match_breakdown.ability_match is defined else (profile.scores.problem_solving if profile and profile.scores and profile.scores.problem_solving is defined else 78.0) %}
-        {% set interest_score = top_1.match_breakdown.interest_match if top_1 and top_1.match_breakdown and top_1.match_breakdown.interest_match is defined else (profile.scores.technology_interest if profile and profile.scores and profile.scores.technology_interest is defined else 75.0) %}
-        {% set academic_score = profile.academic.overall_percentage if profile and profile.academic and profile.academic.overall_percentage is defined else 80.0 %}
-        {% set learning_score = profile.scores.learning_ability if profile and profile.scores and profile.scores.learning_ability is defined else 80.0 %}
-
-        <div class="row g-3">
-            <div class="col-6 col-md-3">
-                <div class="card-subtle p-3 h-100 rounded-3">
-                    <div class="d-flex justify-content-between align-items-center mb-1">
-                        <span class="small fw-semibold" style="color: var(--text-secondary);">Aptitude</span>
-                        <span class="fw-bold text-primary">{{ ability_score | round(0) | int }}%</span>
+        <!-- Compatibility Breakdown (Compact Progress Bars) -->
+        <div class="col-lg-6">
+            <div class="card-custom p-3 p-md-4 h-100">
+                <div class="d-flex align-items-center justify-content-between gap-2 mb-3 pb-2 border-bottom" style="border-color: var(--border-color) !important;">
+                    <div class="d-flex align-items-center gap-2">
+                        <i class="bi bi-sliders2 text-primary"></i>
+                        <h5 class="h6 fw-bold mb-0" style="color: var(--text-main);">Compatibility Breakdown</h5>
                     </div>
-                    <div class="progress-container-custom mb-1" style="height: 6px;">
-                        <div class="progress-bar-solid" data-progress="{{ ability_score }}"></div>
-                    </div>
-                    <div class="small text-muted" style="font-size: 0.72rem;">Problem solving & logic</div>
+                    <span class="small text-muted" style="font-size: 0.72rem;">Profile Factors</span>
                 </div>
-            </div>
 
-            <div class="col-6 col-md-3">
-                <div class="card-subtle p-3 h-100 rounded-3">
-                    <div class="d-flex justify-content-between align-items-center mb-1">
-                        <span class="small fw-semibold" style="color: var(--text-secondary);">Interest</span>
-                        <span class="fw-bold text-success">{{ interest_score | round(0) | int }}%</span>
+                <div class="d-flex flex-column gap-2">
+                    <!-- Aptitude -->
+                    <div>
+                        <div class="d-flex justify-content-between align-items-center mb-1">
+                            <span class="small fw-medium" style="color: var(--text-main);">Aptitude Alignment</span>
+                            <span class="small fw-bold text-primary">{{ ability_score | round(0) | int }}%</span>
+                        </div>
+                        <div class="progress-bar-custom-track" style="height: 6px;">
+                            <div class="progress-bar-solid" data-progress="{{ ability_score }}" style="height: 100%; border-radius: var(--radius-full); background-color: var(--primary);"></div>
+                        </div>
                     </div>
-                    <div class="progress-container-custom mb-1" style="height: 6px;">
-                        <div class="progress-bar-solid bg-success" data-progress="{{ interest_score }}"></div>
-                    </div>
-                    <div class="small text-muted" style="font-size: 0.72rem;">Field passion & affinity</div>
-                </div>
-            </div>
 
-            <div class="col-6 col-md-3">
-                <div class="card-subtle p-3 h-100 rounded-3">
-                    <div class="d-flex justify-content-between align-items-center mb-1">
-                        <span class="small fw-semibold" style="color: var(--text-secondary);">Academic</span>
-                        <span class="fw-bold text-warning">{{ academic_score | round(0) | int }}%</span>
+                    <!-- Interest -->
+                    <div>
+                        <div class="d-flex justify-content-between align-items-center mb-1">
+                            <span class="small fw-medium" style="color: var(--text-main);">Interest Affinity</span>
+                            <span class="small fw-bold" style="color: var(--secondary);">{{ interest_score | round(0) | int }}%</span>
+                        </div>
+                        <div class="progress-bar-custom-track" style="height: 6px;">
+                            <div class="progress-bar-solid" data-progress="{{ interest_score }}" style="height: 100%; border-radius: var(--radius-full); background-color: var(--secondary);"></div>
+                        </div>
                     </div>
-                    <div class="progress-container-custom mb-1" style="height: 6px;">
-                        <div class="progress-bar-solid bg-warning" data-progress="{{ academic_score }}"></div>
-                    </div>
-                    <div class="small text-muted" style="font-size: 0.72rem;">School grade foundation</div>
-                </div>
-            </div>
 
-            <div class="col-6 col-md-3">
-                <div class="card-subtle p-3 h-100 rounded-3">
-                    <div class="d-flex justify-content-between align-items-center mb-1">
-                        <span class="small fw-semibold" style="color: var(--text-secondary);">Learning</span>
-                        <span class="fw-bold text-info">{{ learning_score | round(0) | int }}%</span>
+                    <!-- Academic -->
+                    <div>
+                        <div class="d-flex justify-content-between align-items-center mb-1">
+                            <span class="small fw-medium" style="color: var(--text-main);">Academic Foundation</span>
+                            <span class="small fw-bold" style="color: #6366F1;">{{ academic_score | round(0) | int }}%</span>
+                        </div>
+                        <div class="progress-bar-custom-track" style="height: 6px;">
+                            <div class="progress-bar-solid" data-progress="{{ academic_score }}" style="height: 100%; border-radius: var(--radius-full); background-color: #6366F1;"></div>
+                        </div>
                     </div>
-                    <div class="progress-container-custom mb-1" style="height: 6px;">
-                        <div class="progress-bar-solid bg-info" data-progress="{{ learning_score }}"></div>
+
+                    <!-- Learning -->
+                    <div>
+                        <div class="d-flex justify-content-between align-items-center mb-1">
+                            <span class="small fw-medium" style="color: var(--text-main);">Learning Agility</span>
+                            <span class="small fw-bold" style="color: #8B5CF6;">{{ learning_score | round(0) | int }}%</span>
+                        </div>
+                        <div class="progress-bar-custom-track" style="height: 6px;">
+                            <div class="progress-bar-solid" data-progress="{{ learning_score }}" style="height: 100%; border-radius: var(--radius-full); background-color: #8B5CF6;"></div>
+                        </div>
                     </div>
-                    <div class="small text-muted" style="font-size: 0.72rem;">Adaptability & curiosity</div>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Top 5 Recommended Careers (Clean Cards) -->
-    <div class="card-custom p-4 mb-4 shadow-sm">
-        <h5 class="fw-bold mb-3" style="color: var(--text-main);">Top Career Pathways for You</h5>
+    <!-- Top Career Recommendations (Simple, Well-Aligned List) -->
+    <div class="card-custom mb-3">
+        <div class="p-3 px-md-4 border-bottom d-flex align-items-center justify-content-between" style="border-color: var(--border-color) !important;">
+            <div>
+                <h5 class="h6 fw-bold mb-0" style="color: var(--text-main);">Top Career Recommendations</h5>
+                <span class="small text-muted" style="font-size: 0.75rem;">Ranked by cognitive alignment, interest affinity, and academic performance</span>
+            </div>
+            <span class="badge-custom badge-neutral-custom" style="font-size: 0.7rem;">{{ recommendations|length }} Careers</span>
+        </div>
 
-        <div class="d-flex flex-column gap-3">
+        <div>
             {% for rec in recommendations %}
             {% set r_rank = rec.rank if rec.rank is defined else (rec.rank_position if rec.rank_position is defined else loop.index) %}
             {% set r_score = rec.match_score if rec.match_score is defined else (rec.score if rec.score is defined else 0.0) %}
             {% set r_name = rec.career_name if rec.career_name is defined else (rec.career.career_name if rec.career is defined else 'Career Profile') %}
             {% set r_domain = rec.domain_name if rec.domain_name is defined else (rec.career.domain.domain_name if rec.career and rec.career.domain is defined else 'General') %}
             {% set r_id = rec.career_id if rec.career_id is defined else (rec.career.id if rec.career is defined else None) %}
-            
-            <div class="card-subtle p-3 rounded-3 d-flex flex-wrap align-items-center justify-content-between gap-3 transition-all hover-shadow">
-                <div class="d-flex align-items-center gap-3">
-                    <span class="badge rounded-circle p-2 d-inline-flex align-items-center justify-content-center {% if r_rank == 1 %}bg-primary text-white{% elif r_rank <= 3 %}bg-info text-white{% else %}bg-secondary text-white{% endif %}" style="width: 36px; height: 36px; font-weight: bold;">
+
+            <div class="p-3 px-md-4 d-flex align-items-center justify-content-between gap-2 gap-md-3 career-row-item {% if not loop.last %}border-bottom{% endif %}" style="border-color: var(--border-subtle) !important;">
+                <!-- Rank & Career Name -->
+                <div class="d-flex align-items-center gap-2 gap-md-3 flex-grow-1" style="min-width: 0;">
+                    <span class="badge rounded-2 d-inline-flex align-items-center justify-content-center {% if r_rank == 1 %}bg-primary text-white{% else %}badge-neutral-custom text-secondary{% endif %}" style="width: 28px; height: 28px; font-size: 0.75rem; font-weight: 700; flex-shrink: 0;">
                         #{{ r_rank }}
                     </span>
-                    <div>
-                        <h6 class="fw-bold mb-0" style="color: var(--text-main);">{{ r_name }}</h6>
-                        <span class="small text-muted">{{ r_domain }}</span>
+                    <div class="text-truncate">
+                        <div class="fw-semibold text-truncate" style="color: var(--text-main); font-size: 0.95rem;">{{ r_name }}</div>
+                        <span class="small text-muted d-block text-truncate" style="font-size: 0.75rem;">{{ r_domain }}</span>
                     </div>
                 </div>
 
-                <div class="d-flex align-items-center gap-4">
-                    <div style="min-width: 130px;">
-                        <div class="d-flex justify-content-between align-items-center mb-1">
-                            <span class="small fw-semibold text-muted">Match</span>
-                            <span class="small fw-bold text-primary">{{ r_score | round(0) | int }}%</span>
-                        </div>
-                        <div class="progress-container-custom" style="height: 6px;">
-                            <div class="progress-bar-solid" data-progress="{{ r_score }}"></div>
+                <!-- Match Percentage & Bar -->
+                <div class="d-flex align-items-center gap-2 gap-md-3 flex-shrink-0" style="min-width: 90px;">
+                    <div class="d-none d-sm-block" style="width: 100px; max-width: 120px;">
+                        <div class="progress-bar-custom-track" style="height: 6px;">
+                            <div class="progress-bar-solid" data-progress="{{ r_score }}" style="height: 100%; border-radius: var(--radius-full); background-color: var(--primary);"></div>
                         </div>
                     </div>
+                    <span class="small fw-bold text-primary text-end" style="min-width: 38px;">{{ r_score | round(0) | int }}%</span>
+                </div>
 
+                <!-- View Details Button -->
+                <div class="flex-shrink-0">
                     {% if r_id %}
-                    <a href="{{ url_for('career.career_detail_page', career_id=r_id) }}" class="btn btn-outline-custom btn-sm">
+                    <a href="{{ url_for('career.career_detail_page', career_id=r_id) }}" class="btn btn-outline-custom btn-sm py-1 px-2 text-nowrap" style="font-size: 0.8rem;">
                         View Details <i class="bi bi-chevron-right ms-1"></i>
                     </a>
                     {% endif %}
@@ -228,96 +261,50 @@
         </div>
     </div>
 
-    <!-- Charts & Strengths -->
-    <div class="row g-4 mb-4">
-        <div class="col-lg-6">
-            <div class="card-custom p-4 h-100 shadow-sm">
-                <div class="d-flex align-items-center justify-content-between mb-3">
-                    <h5 class="fw-bold mb-0" style="color: var(--text-main);">Aptitude Strengths</h5>
-                </div>
-                <div style="height: 280px; position: relative;">
-                    <canvas id="cognitiveRadarChart"></canvas>
-                </div>
-            </div>
+    <!-- Why These Careers Fit You (Concise Strengths & Next Steps) -->
+    <div class="card-custom p-3 p-md-4 mb-3">
+        <div class="d-flex align-items-center gap-2 mb-3 pb-2 border-bottom" style="border-color: var(--border-color) !important;">
+            <i class="bi bi-lightbulb text-primary"></i>
+            <h5 class="h6 fw-bold mb-0" style="color: var(--text-main);">Why These Careers Fit You</h5>
         </div>
-
-        <div class="col-lg-6">
-            <div class="card-custom p-4 h-100 shadow-sm">
-                <div class="d-flex align-items-center justify-content-between mb-3">
-                    <h5 class="fw-bold mb-0" style="color: var(--text-main);">Interest Affinities</h5>
-                </div>
-                <div style="height: 280px; position: relative;">
-                    <canvas id="interestBarChart"></canvas>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Why This Matches You -->
-    <div class="card-custom p-4 mb-4 shadow-sm">
-        <h5 class="fw-bold mb-3" style="color: var(--text-main);">
-            <i class="bi bi-lightbulb-fill text-warning me-2"></i> Why These Careers Fit You
-        </h5>
         <div class="row g-3">
             <div class="col-md-6">
-                <div class="card-subtle p-3 h-100 rounded-3">
-                    <strong class="text-success d-block mb-1"><i class="bi bi-check-circle-fill me-1"></i> Demonstrated Strengths</strong>
-                    <p class="small mb-0" style="color: var(--text-secondary);">
+                <div class="p-3 rounded-2 h-100" style="background-color: var(--surface-subtle); border: 1px solid var(--border-color);">
+                    <div class="d-flex align-items-center gap-2 mb-2">
+                        <i class="bi bi-check2-circle text-primary"></i>
+                        <span class="small fw-bold" style="color: var(--text-main);">Demonstrated Strengths</span>
+                    </div>
+                    <p class="small mb-0 text-secondary" style="line-height: 1.55;">
                         {{ top_1.strengths if top_1.strengths else 'Your problem-solving skills and domain affinities show strong alignment with analytical and technology-driven roles.' }}
                     </p>
                 </div>
             </div>
             <div class="col-md-6">
-                <div class="card-subtle p-3 h-100 rounded-3">
-                    <strong class="text-primary d-block mb-1"><i class="bi bi-compass-fill me-1"></i> Next Steps & Preparation</strong>
-                    <p class="small mb-0" style="color: var(--text-secondary);">
-                        {{ top_1.skill_gaps if top_1.skill_gaps else 'Focus on core subjects, join extracurricular science/tech projects, and explore introductory tutorials in your top matched fields.' }}
+                <div class="p-3 rounded-2 h-100" style="background-color: var(--surface-subtle); border: 1px solid var(--border-color);">
+                    <div class="d-flex align-items-center gap-2 mb-2">
+                        <i class="bi bi-arrow-up-right-circle text-primary"></i>
+                        <span class="small fw-bold" style="color: var(--text-main);">Actionable Next Steps</span>
+                    </div>
+                    <p class="small mb-0 text-secondary" style="line-height: 1.55;">
+                        {{ top_1.skill_gaps if top_1.skill_gaps else 'Focus on core subjects, build fundamental technical and analytical competencies, and explore introductory projects in your top matched fields.' }}
                     </p>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Action Bar -->
-    <div class="d-flex flex-wrap justify-content-between align-items-center gap-3 pt-3">
-        <a href="{{ url_for('student.dashboard') }}" class="btn btn-outline-custom">
-            <i class="bi bi-speedometer2 me-1"></i> My Dashboard
-        </a>
-        <a href="{{ url_for('career.explorer_page') }}" class="btn btn-primary-custom">
-            <i class="bi bi-compass me-1"></i> Explore More Careers
-        </a>
-    </div>
-
     {% else %}
     <!-- Empty State -->
-    <div class="card-custom p-5 text-center shadow-sm">
+    <div class="card-custom p-4 p-md-5 text-center">
         <i class="bi bi-inbox fs-1 text-muted mb-3 d-block"></i>
-        <h4 class="fw-bold mb-2">No Recommendations Found</h4>
-        <p class="small mb-4" style="color: var(--text-secondary);">
-            No assessment results are available for this session. Take the assessment to generate recommendations.
+        <h4 class="h5 fw-bold mb-2" style="color: var(--text-main);">No Recommendations Found</h4>
+        <p class="small mb-3 text-secondary" style="max-width: 480px; margin: 0 auto;">
+            No assessment results are available for this session. Take the assessment to generate personalized career recommendations.
         </p>
-        <a href="{{ url_for('assessment.instructions_page') }}" class="btn btn-primary-custom">
+        <a href="{{ url_for('assessment.instructions_page') }}" class="btn btn-primary-custom btn-sm">
             <i class="bi bi-play-circle-fill me-1"></i> Start Assessment
         </a>
     </div>
     {% endif %}
 </div>
-{% endblock %}
-
-{% block extra_js %}
-<script src="{{ url_for('static', filename='js/charts.js') }}"></script>
-<script id="assessment-score-data" type="application/json">
-    {% if profile %}{{ profile | tojson }}{% else %}{}{% endif %}
-</script>
-<script>
-    document.addEventListener('DOMContentLoaded', () => {
-        const rawScoreEl = document.getElementById('assessment-score-data');
-        const profileData = rawScoreEl ? JSON.parse(rawScoreEl.textContent || '{}') : {};
-        const cogScores = profileData.scores || profileData.abilities || {};
-        const intScores = profileData.scores || profileData.interests || {};
-        if (window.renderAssessmentCharts) {
-            window.renderAssessmentCharts(cogScores, intScores);
-        }
-    });
-</script>
 {% endblock %}

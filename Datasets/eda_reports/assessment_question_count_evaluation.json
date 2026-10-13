@@ -85,23 +85,23 @@
     },
     "15": {
       "question_count": 15,
-      "hit_at_1": 28.4,
-      "precision_at_3": 35.199999999999996,
-      "precision_at_5": 39.56,
-      "jaccard_top_5": 31.361111111111107,
-      "ndcg_at_5": 0.4148525023116924,
-      "kendall_tau": 0.5918726114649683,
-      "score_mae": 6.1338799999999996
+      "hit_at_1": 33.2,
+      "precision_at_3": 39.13333333333333,
+      "precision_at_5": 42.96,
+      "jaccard_top_5": 34.93968253968254,
+      "ndcg_at_5": 0.4487267362378333,
+      "kendall_tau": 0.5836242844473112,
+      "score_mae": 6.25316
     },
     "10": {
       "question_count": 10,
-      "hit_at_1": 20.0,
-      "precision_at_3": 24.466666666666665,
-      "precision_at_5": 28.280000000000005,
-      "jaccard_top_5": 21.519047619047623,
-      "ndcg_at_5": 0.2954083837906575,
-      "kendall_tau": 0.4739172780778844,
-      "score_mae": 10.368319999999999
+      "hit_at_1": 22.0,
+      "precision_at_3": 28.33333333333334,
+      "precision_at_5": 32.0,
+      "jaccard_top_5": 24.833333333333332,
+      "ndcg_at_5": 0.33348931384875385,
+      "kendall_tau": 0.47351479480770786,
+      "score_mae": 10.596580000000001
     }
   },
   "summary": [
@@ -138,11 +138,11 @@
       "Balanced_Acc": "69.24%",
       "F1_Score": "0.7005",
       "ROC_AUC": "76.28%",
-      "Top1_Match": "28.4%",
-      "Top5_Agreement": "39.6%",
-      "NDCG@5": "0.415",
-      "Kendall_Tau": "0.592",
-      "Score_Drift_MAE": "\u00b16.13%"
+      "Top1_Match": "33.2%",
+      "Top5_Agreement": "43.0%",
+      "NDCG@5": "0.449",
+      "Kendall_Tau": "0.584",
+      "Score_Drift_MAE": "\u00b16.25%"
     },
     {
       "Questions": 10,
@@ -151,11 +151,11 @@
       "Balanced_Acc": "63.44%",
       "F1_Score": "0.5459",
       "ROC_AUC": "70.72%",
-      "Top1_Match": "20.0%",
-      "Top5_Agreement": "28.3%",
-      "NDCG@5": "0.295",
+      "Top1_Match": "22.0%",
+      "Top5_Agreement": "32.0%",
+      "NDCG@5": "0.333",
       "Kendall_Tau": "0.474",
-      "Score_Drift_MAE": "\u00b110.37%"
+      "Score_Drift_MAE": "\u00b110.60%"
     }
   ]
 }
